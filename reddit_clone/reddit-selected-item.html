@@ -1,0 +1,67 @@
+<dom-module id="reddit-selected-item">
+	<style>
+		div{
+			background: Bisque;
+			border: 1px solid black
+			color: black;
+			cursor: pointer;
+			padding: 5px;
+			margin-bottom: 25px;
+			margin-top: 25px;
+			min-height: 0px;
+		}
+		div:hover{
+			opacity: 0.7;
+		}
+		p, h3, a, label{
+			margin: 5px;
+		}
+	</style>
+
+	<template>
+		<template is="dom-if" if="{{isSelectedItem}}">
+			<div on-tap="_goToURL">
+		    	<label>Reddit Seleccionado:</label>
+		    	<hr>
+		    	<h3>[[reddit.title]]</h3>
+		    	<template is="dom-if" if="{{thumbnail}}">
+		    		<img src="[[reddit.thumbnail]]">
+		    	</template>
+		        <p> <strong>URL:</strong> [[reddit.url]]</p>
+		        <p> <strong>Author:</strong> [[reddit.author]] </p>
+		        <p> <strong>SubReddit:</strong> [[reddit.subreddit]]</p>
+		    </div>
+		</template>
+	</template>
+    
+	<script>
+		Polymer({
+			is: 'reddit-selected-item',
+			properties:{
+				reddit:{
+					type: Object,
+					notify: true,
+					value: {}
+				},
+				thumbnail:{
+					type: Boolean,
+					notify: true,
+					computed: "hasThumbnail(reddit)"
+				},
+				isSelectedItem: {
+					type: Boolean,
+					computed: "isSelected(reddit)"
+				}
+			},
+			isSelected: function(reddit){
+				return (Object.keys(reddit).length > 0 && reddit.constructor === Object);
+			},
+			hasThumbnail: function(reddit){
+				return (reddit.thumbnail != undefined  && reddit.thumbnail.includes("http"));
+			},
+			_goToURL: function(){
+				window.open(this.reddit.url);
+			}
+		});
+	</script>
+</dom-module>

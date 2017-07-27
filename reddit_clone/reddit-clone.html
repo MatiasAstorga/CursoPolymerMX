@@ -1,0 +1,45 @@
+<link rel="import" href="./reddit-clone-header.html">
+<link rel="import" href="./reddit-item-list.html">
+<link rel="import" href="./reddit-clone-dm.html">
+<dom-module id="reddit-clone">
+  <template>
+    <h1>Reddit Clone</h1>
+    <reddit-clone-header numero-de-reddits="{{reddits.length}}" numero-de-reddits-visualizados="{{redditsOnScreen}}"></reddit-clone-header>
+    <reddit-item-list id="redditItemList" datos="{{reddits}}"></reddit-item-list>
+    <reddit-clone-dm id="redditCloneDM"></reddit-clone-dm>
+  </template>
+
+  <script>
+    Polymer({
+      is: "reddit-clone",
+      properties: {
+        reddits:{
+          type: Array,
+          notify: true,
+          reflectToAttribute: false,
+          value: []
+        },
+        redditsOnScreen:{
+          type: Number,
+          notify: true,
+          value: 0
+        }
+      },
+      listeners: {
+        "redditCloneDM.data-Normalized" : "setData",
+        "redditItemList.number-reddits-printed" : "setNumberRedditsShowed"
+      },
+      attached: function(){
+        console.log("attached: reddit-clone")
+        this.$.redditCloneDM.load();
+      },
+      setData: function(data){
+        this.reddits = data.detail;
+      },
+      setNumberRedditsShowed: function(data){
+        var numberReddits = data.detail.showedReddits;
+        this.redditsOnScreen = numberReddits;
+      }
+    });
+  </script>
+</dom-module>

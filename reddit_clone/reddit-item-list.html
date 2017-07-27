@@ -1,0 +1,89 @@
+<link rel="import" href="./reddit-selected-item.html">
+<dom-module id="reddit-item-list">
+	<template>
+		<style>
+			div{
+				background: LightBlue;
+				color: black;
+				cursor: pointer;
+				padding: 5px;
+			}
+			p, h3, a{
+				margin: 5px;
+			}
+			.inLine{
+				display: inline-block;
+				padding: 10px;
+				margin-bottom: 10px;
+				background: Beige;
+			}
+		</style>
+		<reddit-selected-item reddit="{{reddit}}"></reddit-selected-item>
+		<template is="dom-if" if="{{!noTieneReddits}}">
+			<div class="inLine">
+				<label> Filtrar: </label>
+				<input value="{{str::input}}">
+			</div>
+		</template>
+		<template id="listItems" is="dom-repeat" items="{{datos}}" as="redditItem" filter="{{computeFilter(str)}}">
+	    	<div on-tap="_elementTap">
+	    		<h3>[[redditItem.title]]</h3>
+	   			<p> Author: [[redditItem.author]]</p>
+	    		<p> SubReddit: [[redditItem.subreddit]]</p>
+	    	</div>
+	      <hr/>
+	    </template>
+	    <template is="dom-if" if="{{noTieneReddits}}">
+	    	<h3>Cargando...</h3>
+	    </template>
+	</template>
+	
+	<script>
+		Polymer({
+			is: 'reddit-item-list',
+			properties:{
+				datos:{
+					type: Array,
+					notify: true,
+					reflectToAttribute: false,
+					value: []
+				},
+				noTieneReddits:{
+					type: Boolean,
+					notify: true,
+					reflectToAttribute: true,
+					computed: "noDatos(datos)"
+				},
+				reddit:{
+					type: Object,
+					reflectToAttribute: true,
+					notify: true,
+					value: {}	
+				}
+			},
+			listeners:{
+				"listItems.rendered-item-count-changed" : "_fireHeader"
+			},
+			computeFilter: function(str){
+				var strLC = str.toLowerCase();
+				return function(reddit) {
+					return (reddit.title.toLowerCase().includes(strLC) || reddit.author.toLowerCase().includes(strLC) || reddit.subreddit.toLowerCase().includes(strLC));
+				}
+			},
+			_elementTap: function(element) {
+				console.warn("Reddit clickeado:")
+				console.log(element.model.redditItem);
+				this.reddit = element.model.redditItem;
+				window.setTimeout(() => document.getElementById('top').scrollIntoView(), 100);
+			},
+			noDatos: function(datos) {
+				return (datos.length == 0);
+			},
+			_fireHeader: function(event){
+				this.fire("number-reddits-printed", {
+					showedReddits: event.detail.value
+				})
+			}
+		});
+	</script>
+</dom-module>

@@ -1,0 +1,20 @@
+{
+  "name": "proyecto_dia_2",
+  "authors": [
+    "Matias Astorga <matias.astorga.donoso91@gmail.com>"
+  ],
+  "description": "",
+  "main": "",
+  "license": "MIT",
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "polymer": "1.9.3"
+  }
+}

@@ -1,0 +1,44 @@
+<link rel="import" href="./reddit-clone-dp.html">
+<dom-module id="reddit-clone-dm">
+	<template>
+    	<reddit-clone-dp id="redditCloneDP"></reddit-clone-dp>
+    </template>
+	<script>
+		Polymer({
+		  is: 'reddit-clone-dm',
+		  properties:{
+		  	data:{
+		  		type: Array,
+		  		notify: true,
+		  		computed: "_getDataFromFetch()"
+		  	}
+		  },
+		  load: function(){
+		  	this.$.redditCloneDP.fetch();
+		  },
+		  listeners: {
+		  	"redditCloneDP.data-loaded": "_getDataFromFetch"
+		  },
+		  _getDataFromFetch: function(event){
+		    console.warn("Datos del fetch:");
+		    console.log(event.detail.children);
+		    this.normalizeData(event.detail.children);
+		  },
+		  normalizeData: function(data){
+		  	var dataNormalized = data.map((elem) => {
+		  		var obj = {
+		  			url : elem.data.url,
+		  			title : elem.data.title,
+		  			author : elem.data.author,
+		  			subreddit : elem.data.subreddit,
+		  			thumbnail : elem.data.thumbnail
+		  		}
+		  		return obj;
+		  	});
+		  	console.warn("Data Normalizada: ");
+		  	console.log(dataNormalized);
+		  	this.fire("data-Normalized", dataNormalized);
+		  }
+		});
+	</script>
+</dom-module>

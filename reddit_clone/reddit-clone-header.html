@@ -1,0 +1,39 @@
+<dom-module id="reddit-clone-header">
+	<template>
+		<style>
+			div{
+				background: red;
+				color: white;
+				padding: 5px;
+				margin-bottom: 10px;
+			}
+			p, h3, a{
+				margin: 5px;
+			}
+		</style>
+
+		<template is="dom-if" if="{{numeroDeReddits}}">
+	    	<div>
+		        <h3>Cargados: [[numeroDeReddits]] reddits</h3>
+		        <h3>En vista: [[numeroDeRedditsVisualizados]] reddits</h3>
+		    </div>
+	    </template>
+	</template>
+  <script>
+    Polymer({
+      is: 'reddit-clone-header',
+      properties:{
+      	numeroDeReddits:{
+      		type: Number,
+      		notify: true,
+      		value: 0
+      	},
+      	numeroDeRedditsVisualizados:{
+      		type: Number,
+      		notify: true,
+      		value: 0
+      	}
+      }
+    });
+  </script>
+</dom-module>
