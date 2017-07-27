@@ -1,0 +1,25 @@
+<link rel="import" href="behavior-extend-test.html">
+<dom-module id="component-1">
+	<template>
+		<h2> Component-1 </h2>
+	    <h3> Texto del Behavior: [[initialTextBehavior]] <h3>
+	    <h3> Texto del Behavior-extend: [[initialTextBehaviorExtend]] <h3>
+	    <h3> Texto del componente 1: [[initialTextComponent]] <h3>
+  	</template>
+	<script>
+	  Polymer({
+	    is: 'component-1',
+	    behaviors: [MyBehaviors.newBehaviorExtendTest],
+	    properties: {
+	    	initialTextComponent:{
+	    		type: String,
+	    		value: "texto por defecto del component-1"
+	    	},
+	    	initialTextBehavior:{
+	    		type: String,
+	    		value: "texto del behaviorTest sobreescrito por el component-1"
+	    	}
+	    }
+	  });
+	</script>
+</dom-module>

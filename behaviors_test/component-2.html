@@ -1,0 +1,24 @@
+<link rel="import" href="behavior-extend-test.html">
+<dom-module id="component-2">
+	<template>
+		<h2> Component-2 </h2>
+	    <h3> Texto del Behavior: [[initialTextBehavior]] <h3>
+	    <h3> Texto del Behavior-extend: [[initialTextBehaviorExtend]] <h3>
+	    <h3> Texto del componente 2: [[initialTextComponent]] <h3>
+  	</template>
+	<script>
+	  Polymer({
+	    is: 'component-2',
+	    behaviors: [MyBehaviors.newBehaviorExtendTest],
+	    properties: {
+	    	initialTextComponent:{
+	    		type: String,
+	    		value: "texto por defecto del component-2"
+	    	}
+	    },
+	    _alertClick: function(){
+      		window.alert("Click desde el component-2");
+    	}
+	  });
+	</script>
+</dom-module>

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<script type="text/javascript">
+		//Global Polymer Properties
+		window.xPolymer={
+			dom: "shadow",
+			useNativeCSSProperties: true
+		}
+	</script>
+
+	<title>Behaviors Test</title>
+	<meta charset="utf-8">
+	<link rel="import" href="./bower_components/polymer/polymer.html">
+	<link rel="import" href="./component-1.html">
+	<link rel="import" href="./component-2.html">
+
+</head>
+<body>
+	<h1>Behavior Test</h1>
+	<component-1></component-1>
+	<hr>
+	<component-2 initial-text-component="texto modificado por parametros de entrada"></component-2>
+</body>
+</html>

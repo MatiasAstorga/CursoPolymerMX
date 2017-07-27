@@ -1,0 +1,18 @@
+<script>
+  window.MyBehaviors = window.MyBehaviors || {};
+  MyBehaviors.behaviorTest = {
+    properties: {
+      initialTextBehavior: {
+        type: String,
+        notify: true,
+        value: "texto por defecto del behavior"
+      }
+    },
+    listeners: {
+      click: '_alertClick'
+    },
+    _alertClick: function(){
+      window.alert("Click desde el behaviorTest");
+    }
+  };
+</script>

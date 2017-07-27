@@ -1,0 +1,19 @@
+<link rel="import" href="behavior-test.html">
+
+<script>
+	window.MyBehaviors = window.MyBehaviors || {};
+	MyBehaviors.behaviorExtendTest = {
+		properties: {
+      		initialTextBehaviorExtend: {
+        		type: String,
+        		notify: true,
+        		value: "texto por defecto del behavior extend"
+      		}
+    	}
+	}
+
+	MyBehaviors.newBehaviorExtendTest = [ 
+		MyBehaviors.behaviorTest, 
+		MyBehaviors.behaviorExtendTest
+	]
+</script>
