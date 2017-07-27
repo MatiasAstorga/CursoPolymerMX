@@ -1,10 +1,12 @@
 <link rel="import" href="behavior-extend-test.html">
 <dom-module id="component-1">
 	<template>
+		<content select="#content1"></content>
 		<h2> Component-1 </h2>
-	    <h3> Texto del Behavior: [[initialTextBehavior]] <h3>
-	    <h3> Texto del Behavior-extend: [[initialTextBehaviorExtend]] <h3>
-	    <h3> Texto del componente 1: [[initialTextComponent]] <h3>
+	    <h3> Texto del Behavior: [[initialTextBehavior]] </h3>
+	    <h3> Texto del Behavior-extend: [[initialTextBehaviorExtend]] </h3>
+	    <h3> Texto del componente 1: [[initialTextComponent]] </h3>
+	    <content select="#content2"></content>
   	</template>
 	<script>
 	  Polymer({
