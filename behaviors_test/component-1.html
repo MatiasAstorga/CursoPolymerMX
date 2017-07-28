@@ -1,6 +1,18 @@
 <link rel="import" href="behavior-extend-test.html">
 <dom-module id="component-1">
 	<template>
+		<style type="text/css">
+			:host{
+				display: block;
+			}
+			::content #content1{
+				font-size: var(--font-size-standard, 40px);
+				@apply(--component-style-content1);
+			}
+			::content #content2{
+				font-size: var(--font-size-standard, 40px);
+			}
+		</style>
 		<content select="#content1"></content>
 		<h2> Component-1 </h2>
 	    <h3> Texto del Behavior: [[initialTextBehavior]] </h3>
