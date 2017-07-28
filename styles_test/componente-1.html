@@ -1,0 +1,42 @@
+<link rel="import" href="./shared-styles-component.html">
+<dom-module id="componente-1">
+	<template>
+		<style include="shared-styles-component">
+			div, ::content #header div{
+				background: var(--background-standard, LightGreen);
+				font-size: var(--background-font-size-header, 30px);
+				padding: 10px;
+				@apply(--componente1-style-header-div);
+			}
+			h1, ::content #header h1{
+				color: var(--color-text-standard, yellow);
+				@apply(--componente1-style-header-h1);
+			}
+			h2, ::content #header h2{
+				@apply(--componente1-style-header-h2);
+			}
+			::content #body{
+				background: var(--background-standard, LightBlue);
+				@apply(--componente1-style-body);
+			}
+			::content #footer{
+				background: var(--background-standard, LightYellow);
+				@apply(--componente1-style-footer);
+			}
+		</style>
+		<content select="#header">
+			<div>
+				<h1>Titulo</h1>
+				<h2>Sub-Titulo</h2>
+			</div>
+		</content>
+	    <content select="#body"></content>
+	    <content select="#footer"></content>
+  	</template>
+	<script>
+	  Polymer({
+	    is: 'componente-1',
+	    properties: {}
+	  });
+	</script>
+</dom-module>
