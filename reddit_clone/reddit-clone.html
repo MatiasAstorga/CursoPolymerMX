@@ -1,11 +1,20 @@
 <link rel="import" href="./reddit-clone-header.html">
 <link rel="import" href="./reddit-item-list.html">
 <link rel="import" href="./reddit-clone-dm.html">
+<link rel="import" href="./shared-style.html">
 <dom-module id="reddit-clone">
   <template>
+    <style include="shared-style">
+      reddit-clone-header#redditHeader{
+        --background-header-info-standard: LightSteelBlue;
+        --color-header-standard: Tomato;
+      }
+    </style>
+
     <h1>Reddit Clone</h1>
-    <reddit-clone-header numero-de-reddits="{{reddits.length}}" numero-de-reddits-visualizados="{{redditsOnScreen}}"></reddit-clone-header>
-    <reddit-item-list id="redditItemList" datos="{{reddits}}"></reddit-item-list>
+    <reddit-loading-screen id="redditLoadingScreen"></reddit-loading-screen>
+    <reddit-clone-header class="mediumFontSize" id="redditHeader" numero-de-reddits="[[reddits.length]]" numero-de-reddits-visualizados="[[redditsOnScreen]]"></reddit-clone-header>
+    <reddit-item-list class="mediumFontSize" id="redditItemList" datos="[[reddits]]"></reddit-item-list>
     <reddit-clone-dm id="redditCloneDM"></reddit-clone-dm>
   </template>
 
@@ -15,30 +24,42 @@
       properties: {
         reddits:{
           type: Array,
-          notify: true,
-          reflectToAttribute: false,
           value: []
         },
         redditsOnScreen:{
           type: Number,
-          notify: true,
           value: 0
         }
       },
       listeners: {
         "redditCloneDM.data-Normalized" : "setData",
-        "redditItemList.number-reddits-printed" : "setNumberRedditsShowed"
+        "redditItemList.number-reddits-printed" : "setNumberRedditsShowed",
+        "redditHeader.data-reloaded" : "reloadReddits",
+        "redditHeader.data-new-load" : "loadNewReddits"
       },
       attached: function(){
         console.log("attached: reddit-clone")
-        this.$.redditCloneDM.load();
+        this.load_reddits();
       },
       setData: function(data){
-        this.reddits = data.detail;
+        if(data.detail[0] != undefined)
+          this.push("reddits", ...data.detail);
+        this.$.redditLoadingScreen.hideLS();
       },
       setNumberRedditsShowed: function(data){
         var numberReddits = data.detail.showedReddits;
         this.redditsOnScreen = numberReddits;
+      },
+      reloadReddits: function() {
+        this.reddits = [];
+        this.load_reddits();
+      },
+      loadNewReddits: function(){
+        this.load_reddits();
+      },
+      load_reddits: function() {
+        this.$.redditLoadingScreen.showLS();
+        this.$.redditCloneDM.load();
       }
     });
   </script>

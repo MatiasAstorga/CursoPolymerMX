@@ -5,11 +5,10 @@
     </template>
 	<script>
 		Polymer({
-		  is: 'reddit-clone-dm',
-		  properties:{
+			is: 'reddit-clone-dm',
+			properties:{
 		  	data:{
 		  		type: Array,
-		  		notify: true,
 		  		computed: "_getDataFromFetch()"
 		  	}
 		  },
@@ -25,16 +24,18 @@
 		    this.normalizeData(event.detail.children);
 		  },
 		  normalizeData: function(data){
-		  	var dataNormalized = data.map((elem) => {
-		  		var obj = {
-		  			url : elem.data.url,
-		  			title : elem.data.title,
-		  			author : elem.data.author,
-		  			subreddit : elem.data.subreddit,
-		  			thumbnail : elem.data.thumbnail
-		  		}
-		  		return obj;
-		  	});
+		  	if(data != undefined){
+		  		var dataNormalized = data.map((elem) => {
+			  		var obj = {
+			  			url : elem.data.url,
+			  			title : elem.data.title,
+			  			author : elem.data.author,
+			  			subreddit : elem.data.subreddit,
+			  			thumbnail : elem.data.thumbnail
+			  		}
+			  		return obj;
+		  		});
+		  	}
 		  	console.warn("Data Normalizada: ");
 		  	console.log(dataNormalized);
 		  	this.fire("data-Normalized", dataNormalized);

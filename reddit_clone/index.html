@@ -2,8 +2,7 @@
 <html>
 <head>
 	<script type="text/javascript">
-		//Global Polymer Properties
-		window.xPolymer={
+		window.Polymer={
 			dom: "shadow",
 			useNativeCSSProperties: true
 		}
@@ -13,9 +12,11 @@
 	<meta charset="utf-8">
 	<link rel="import" href="./bower_components/polymer/polymer.html">
 	<link rel="import" href="./reddit-clone.html">
-	<style>
-
-    </style>
+	<style is="custom-style">
+		:root{
+			--margin-various-tags-standard: 1px;
+		}
+	</style>
 </head>
 <body>
 	<div id="top"></div>

@@ -1,40 +1,43 @@
 <link rel="import" href="./reddit-selected-item.html">
+<link rel="import" href="./reddit-item-detail.html">
+<link rel="import" href="./reddit-loading-screen.html">
+<link rel="import" href="./shared-style.html">
 <dom-module id="reddit-item-list">
 	<template>
-		<style>
-			div{
-				background: LightBlue;
-				color: black;
-				cursor: pointer;
-				padding: 5px;
-			}
-			p, h3, a{
-				margin: 5px;
+		<style include="shared-style">
+			.itemList{
+				background: var(--background-itemList-standard, LightBlue);
+				color: var(--color-itemList-standard, black);
+				padding: var(--padding-itemList-standard, 5px);
+				cursor: var(--cursor-itemList-standard, pointer);
+				@apply(--reddit-itemList-style);
 			}
 			.inLine{
-				display: inline-block;
-				padding: 10px;
-				margin-bottom: 10px;
-				background: Beige;
+				display: var(--display-inline-standard, inline-block);
+				padding: var(--padding-inline-standard, 10px);
+				margin-bottom: var(--margin-bottom-inline-standard, 10px);
+				background: var(--background-inline-standard, Beige);
+				@apply(--reddit-inLine-style);
 			}
 		</style>
-		<reddit-selected-item reddit="{{reddit}}"></reddit-selected-item>
-		<template is="dom-if" if="{{!noTieneReddits}}">
+		<reddit-selected-item reddit="[[reddit]]"></reddit-selected-item>
+		
+		<template is="dom-if" if="[[TieneReddits]]">
 			<div class="inLine">
 				<label> Filtrar: </label>
 				<input value="{{str::input}}">
-			</div>
+			</div>	
 		</template>
-		<template id="listItems" is="dom-repeat" items="{{datos}}" as="redditItem" filter="{{computeFilter(str)}}">
-	    	<div on-tap="_elementTap">
-	    		<h3>[[redditItem.title]]</h3>
-	   			<p> Author: [[redditItem.author]]</p>
-	    		<p> SubReddit: [[redditItem.subreddit]]</p>
+		
+		<template id="listItems" is="dom-repeat" items="[[datos]]" as="redditItem" filter="[[computeFilter(str)]]">
+	    	<div class="itemList" on-tap="_elementTap">
+	    		<reddit-item-detail title=[[redditItem.title]] author=[[redditItem.author]] subreddit=[[redditItem.subreddit]]></reddit-item-detail>
 	    	</div>
 	      <hr/>
 	    </template>
-	    <template is="dom-if" if="{{noTieneReddits}}">
-	    	<h3>Cargando...</h3>
+
+	    <template is="dom-if" if="[[!TieneReddits]]">
+	    	<h2>No hay reddits disponibles para mostrar.</h2>
 	    </template>
 	</template>
 	
@@ -44,20 +47,14 @@
 			properties:{
 				datos:{
 					type: Array,
-					notify: true,
-					reflectToAttribute: false,
 					value: []
 				},
-				noTieneReddits:{
+				TieneReddits:{
 					type: Boolean,
-					notify: true,
-					reflectToAttribute: true,
-					computed: "noDatos(datos)"
+					computed: "noDatos(datos.length)"
 				},
 				reddit:{
 					type: Object,
-					reflectToAttribute: true,
-					notify: true,
 					value: {}	
 				}
 			},
@@ -76,8 +73,10 @@
 				this.reddit = element.model.redditItem;
 				window.setTimeout(() => document.getElementById('top').scrollIntoView(), 100);
 			},
-			noDatos: function(datos) {
-				return (datos.length == 0);
+			noDatos: function(length) {
+				var response = false;
+				(length == 0) ? this.reddit = {} : response = true;
+				return response;
 			},
 			_fireHeader: function(event){
 				this.fire("number-reddits-printed", {

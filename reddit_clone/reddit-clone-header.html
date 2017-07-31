@@ -1,23 +1,37 @@
+<link rel="import" href="./shared-style.html">
 <dom-module id="reddit-clone-header">
 	<template>
-		<style>
-			div{
-				background: red;
-				color: white;
-				padding: 5px;
-				margin-bottom: 10px;
+		<style include="shared-style">
+			.headerInfo{
+				background: var(--background-header-info-standard, red);
+				color: var(--color-header-standard, white);
+				padding: var(--padding-header-standard, 5px);
+				margin-bottom: var(--margin-bottom-header-standard, 10px);
+				@apply(--reddit-headerInfo-style);
 			}
-			p, h3, a{
-				margin: 5px;
+			.headerButton{
+				height: var(--height-header-standard, 30px);
+				background: var(--background-header-buttons-standard, LightBlue);
+				cursor: var(--cursor-header-standard, pointer);
+				margin-left: var(--margin-left-header-standard, 0px);
+				@apply(--reddit-headerButton-style);
+			}
+			.headerButton:hover{
+				opacity: var(--opacity-header-standard, 0.8);
+				background: var(--background-header-standard, DeepSkyBlue);
+			}
+			p, h3, a, button{
+				margin: var(--margin-various-tags-standard, 5px);
 			}
 		</style>
-
-		<template is="dom-if" if="{{numeroDeReddits}}">
-	    	<div>
-		        <h3>Cargados: [[numeroDeReddits]] reddits</h3>
-		        <h3>En vista: [[numeroDeRedditsVisualizados]] reddits</h3>
-		    </div>
-	    </template>
+		
+		<button class="headerButton" on-tap="recargarReddits">Recargar reddits</button>
+    	<button class="headerButton" on-tap="cargarMasReddits">Cargar más reddits</button>
+    	<div class="headerInfo">
+	        <h3>Cargados: [[numeroDeReddits]] reddits</h3>
+	        <h3>En vista: [[numeroDeRedditsVisualizados]] reddits</h3>
+	    </div>
+	    
 	</template>
   <script>
     Polymer({
@@ -25,14 +39,18 @@
       properties:{
       	numeroDeReddits:{
       		type: Number,
-      		notify: true,
       		value: 0
       	},
       	numeroDeRedditsVisualizados:{
       		type: Number,
-      		notify: true,
       		value: 0
       	}
+      },
+      recargarReddits: function(){
+      	this.fire("data-reloaded");
+      },
+      cargarMasReddits: function(){
+      	this.fire("data-new-load");
       }
     });
   </script>

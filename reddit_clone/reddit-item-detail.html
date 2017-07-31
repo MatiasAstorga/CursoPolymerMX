@@ -1,0 +1,64 @@
+<link rel="import" href="./shared-style.html">
+<dom-module id="reddit-item-detail">
+  <template>
+    <style include="shared-style">
+      p, h3{
+        margin: var(--margin-various-tags-standard, 5px);
+      }
+    </style>
+
+    
+    <h3>[[title]]</h3>
+    
+    <template is="dom-if" if="[[isDetailedItem]]">
+      <hr>
+      <template is="dom-if" if="[[isPhotoThumbnail]]">
+        <img src="[[thumbnail]]">
+      </template>
+      <p> <strong>URL:</strong> [[url]]</p>
+    </template>
+
+    <p> <strong>Author:</strong> [[author]]</p>
+    <p> <strong>SubReddit:</strong> [[subreddit]]</p>
+    
+  </template>
+
+  <script>
+    Polymer({
+      is: "reddit-item-detail",
+      properties: {
+        title:{
+          type: String,
+          value: ""
+        },
+        author:{
+          type: String,
+          value: ""
+        },
+        subreddit:{
+          type: String,
+          value: ""
+        },
+        url:{
+          type: String,
+          value: ""
+        },
+        thumbnail:{
+          type: String,
+          value: ""
+        },
+        isPhotoThumbnail:{
+          type: Boolean,
+          computed: "hasThumbnail(thumbnail)"
+        },
+        isDetailedItem:{
+          type: Boolean,
+          value: false
+        }
+      },
+      hasThumbnail: function(thumbnail){
+        return (thumbnail != undefined  && thumbnail.includes("http"));
+      }
+    });
+  </script>
+</dom-module>
