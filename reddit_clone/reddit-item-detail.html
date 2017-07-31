@@ -1,13 +1,11 @@
-<link rel="import" href="./shared-style.html">
 <dom-module id="reddit-item-detail">
   <template>
-    <style include="shared-style">
+    <style include="shared-styles-item-detail">
       p, h3{
         margin: var(--margin-various-tags-standard, 5px);
       }
     </style>
 
-    
     <h3>[[title]]</h3>
     
     <template is="dom-if" if="[[isDetailedItem]]">
