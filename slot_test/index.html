@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<script type="text/javascript">
+		window.Polymer={
+			dom: "shadow",
+			useNativeCSSProperties: true
+		}
+	</script>
+
+	<title>Style Test</title>
+	<meta charset="utf-8">
+	<link rel="import" href="./bower_components/polymer/polymer.html">
+	<link rel="import" href="./main-component.html">
+
+	<style is="custom-style">
+	:root{
+		--background-standard: Aquamarine;
+		--header-font-size-standard: 40px;
+		--body-font-size-standard: 25px;
+		--footer-font-size-standard: 16px;
+	}
+	</style>
+</head>
+<body>
+	<main-component></main-component>
+</body>
+</html>

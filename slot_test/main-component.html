@@ -1,0 +1,103 @@
+<link rel="import" href="./componente-1.html">
+<link rel="import" href="./shared-styles-component.html">
+
+<dom-module id="main-component">
+  <template>
+    <style include="shared-styles-component">
+      componente-1#c1{
+      --componente1-style-header-div:{
+        background: LightGreen;
+      }
+      --componente1-style-header-h1:{
+        padding: 5px;
+        color: red;
+        font-weight: bold;
+        margin: 0px;
+      }
+      --componente1-style-header-h2:{
+        padding: 5px;
+        color: blue;
+        font-weight: bold;
+        margin: 0px;
+      }
+      --componente1-style-body:{
+        background: LightBlue;
+        font-size: 40px;
+        margin: 20px 0 20px 0;
+        padding: 5px; 
+      }
+      --componente1-style-footer:{
+        background: PeachPuff;
+        font-size: 20px;
+        padding: 5px;
+        font-style: italic;
+      }
+    }
+    componente-1#c2{
+      --componente1-style-body:{
+        background: LightGray;
+        font-size: 50px;
+        padding: 20px;
+        color: white;
+      }
+    }
+    hr{
+      height: 3px;
+      background: black;
+      margin: 20px 0 20px 0;
+    } 
+    </style>
+
+    <h1>Styles Test</h1>
+    <componente-1 id="c1">
+      <div id="header" slot="header">
+        <h1>Header 1</h1>
+        <h2>Sub-Header 1</h2>
+      </div>
+      <div id="body" slot="body" class="body">
+        Body 1
+      </div>
+      <div id="footer" slot="footer" class="footer">
+        Footer 1
+      </div>
+    </componente-1>
+    <hr>
+    <componente-1 id="c2">
+      <div id="header" slot="header">
+        <div>Header 2</div>
+      </div>
+      <div id="body" slot="body" class="body">
+        Body 2
+      </div>
+      <div id="footer" slot="footer" class="footer">
+        Footer 2
+      </div>
+    </componente-1>
+    <hr>
+    <componente-1 id="c3" class="rounded">
+      <div id="header" slot="header">
+        <div>Header 3</div>
+      </div>
+      <div id="body" slot="body" class="body">
+        Body 3
+      </div>
+      <div id="footer" slot="footer" class="footer">
+        Footer 3
+      </div>
+    </componente-1>
+    <hr>
+    <componente-1 id="c4">
+    </componente-1>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'main-component',
+      properties: {
+
+      }
+    });
+  </script>
+</dom-module>
+
+

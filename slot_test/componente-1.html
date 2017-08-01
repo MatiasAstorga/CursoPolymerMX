@@ -1,0 +1,63 @@
+<link rel="import" href="./shared-styles-component.html">
+<dom-module id="componente-1">
+	<template>
+		<style include="shared-styles-component">
+			:host{
+				display: block;
+			}
+			#header, #header::slotted(*) {
+				background: var(--header-background-standard, LightGreen);
+				font-size: var(--header-font-size-standard, 30px);
+				padding: 10px;
+				@apply(--componente1-style-header-div);
+			}
+			#header div h1, #header::slotted(div h1) {
+				color: var(--color-text-standard, yellow);
+				font-size: var(--header-h1-font-size-standard, 40px);
+				@apply(--componente1-style-header-h1);
+				background-color: pink;
+			}
+			#header div h2, #header::slotted(div h2) {
+				font-size: var(--header-h2-font-size-standard, 30px);
+				@apply(--componente1-style-header-h2);
+			}
+			#body div, ::slotted(.body) {
+				background: var(--body-background-standard, LightBlue);
+				font-size: var(--body-font-size-standard, 30px);
+				@apply(--componente1-style-body);
+			}
+			#footer div, ::slotted(.footer) {
+				background: var(--footer-background-standard, LightYellow);
+				font-size: var(--footer-font-size-standard, 30px);
+				@apply(--componente1-style-footer);
+			}
+			.main{
+				background: var(--background-standard, LightGreen);
+			}
+		</style>
+		
+		<div class="main">
+			<slot id="header" name="header">
+				<div>
+					<h1>Titulo</h1>
+					<h2>Sub-Titulo</h2>
+				</div>
+			</slot>
+			<slot id="body" name="body">
+				<div>
+					Cuerpo
+				</div>
+			</slot>
+		    <slot id="footer" name="footer">
+		    	<div>
+		    		Pie de pagina
+		    	</div>
+		    </slot>
+	    <div>
+  	</template>
+	<script>
+	  Polymer({
+	    is: 'componente-1'
+	  });
+	</script>
+</dom-module>
