@@ -1,0 +1,112 @@
+<link rel="import" href="./listado-seleccionable-item.html">
+<dom-module id="listado-seleccionable">
+  <template>
+    <style>
+      .container{
+        max-width: var(--max-width-container-listado-standard, 600px);
+        margin: var(--margin-container-listado-standard, auto);
+      }
+      .header{
+        text-align: center;
+        @apply(--header-listado-style);
+      }
+      .btn_fixed{
+        position: fixed;
+        top: 0;
+        right: 0;
+        margin: 10px;
+        cursor: pointer;
+        padding: 8px;
+        background: LightBlue;
+        border-radius: 12px;
+        @apply(--btn-fixed-listado-style);
+      }
+      .btn_fixed:hover{
+        opacity: 0.8;
+        @apply(--btn-fixed-hover-listado-style);
+      }
+      .btn_fixed:active{
+        outline: none;
+        border: 1px solid black;
+        @apply(--btn-fixed-active-listado-style);
+      }
+      .btn_fixed:focus{
+        outline: none;
+        @apply(--btn-fixed-focus-listado-style);
+      }
+      .btn_fixed:disabled{
+        cursor: not-allowed;
+        background: LightGray;
+        @apply(--btn-fixed-disabled-listado-style);
+      }  
+    </style>
+    
+    <div class="container">
+      <div class="header">
+        <h1>[[header]]</h1>
+        <h2>[[subHeader]]</h2>
+      </div>
+      <template id="listadoItems" is="dom-repeat" items="[[items]]" as="item" indexAs="index">
+        <div on-tap="_clickItem">
+          <listado-seleccionable-item id="listadoItemsSeleccionables" title=[[item.title]] subtitle=[[item.subtitle]] infotitle=[[item.infotitle]] infosubtitle=[[item.infosubtitle]] open="[[_itemOpened(selectedIndex, index)]]"></listado-seleccionable-item>
+        </div>
+        <hr>
+      </template>
+      <button id="btn_listado" class="btn_fixed" disabled$="[[!_isItemSelected(selectedIndex)]]" on-tap="_clickBtn">[[buttonText]]</button>
+    </div>
+  </template>
+
+  <script>
+    Polymer({
+      is: "listado-seleccionable",
+      properties: {
+        header:{
+          type: String,
+          value: "Header"
+        },
+        subHeader: {
+          type: String,
+          value: "Sub-Header"
+        },
+        items:{
+          type: Array,
+          value: []
+        },
+        buttonText: {
+          type: String,
+          value: "Continuar"
+        },
+        selectedIndex:{
+          type: Number,
+          value: -1
+        }
+      },
+      attached: function(){
+        var array = [];
+        for(let i = 1; i < 9; i++){
+          var obj = {
+            title: "Titulo "+ i,
+            subtitle: "Sub-titulo "+ i,
+            infotitle: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris...",
+            infosubtitle: "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis...",
+            open: false
+          }
+          array.push(obj);
+        }
+        this.items = array;
+      },
+      _clickItem: function(data, index){
+        this.selectedIndex = (this.selectedIndex != data.model.index) ? data.model.index : -1;
+      },
+      _itemOpened: function(selectedIndex, index){
+        return (selectedIndex == index);
+      },
+      _isItemSelected: function(selectedIndex){
+        return (selectedIndex != -1);
+      },
+      _clickBtn: function(){
+        alert("Boton clickeado!");
+      },
+    });
+  </script>
+</dom-module>
