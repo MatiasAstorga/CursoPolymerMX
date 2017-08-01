@@ -19,8 +19,6 @@
 		  	"redditCloneDP.data-loaded": "_getDataFromFetch"
 		  },
 		  _getDataFromFetch: function(event){
-		    console.warn("Datos del fetch:");
-		    console.log(event.detail.children);
 		    this.normalizeData(event.detail.children);
 		  },
 		  normalizeData: function(data){
@@ -36,8 +34,6 @@
 			  		return obj;
 		  		});
 		  	}
-		  	console.warn("Data Normalizada: ");
-		  	console.log(dataNormalized);
 		  	this.fire("data-Normalized", dataNormalized);
 		  }
 		});

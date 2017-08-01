@@ -21,7 +21,7 @@
 		</style>
 		<reddit-selected-item reddit="[[reddit]]"></reddit-selected-item>
 		
-		<template is="dom-if" if="[[TieneReddits]]">
+		<template is="dom-if" if="[[tieneReddits]]">
 			<div class="inLine">
 				<label> Filtrar: </label>
 				<input value="{{str::input}}">
@@ -35,7 +35,7 @@
 	      <hr/>
 	    </template>
 
-	    <template is="dom-if" if="[[!TieneReddits]]">
+	    <template is="dom-if" if="[[!tieneRedditsFilter]]">
 	    	<h2>No hay reddits disponibles para mostrar.</h2>
 	    </template>
 	</template>
@@ -48,13 +48,17 @@
 					type: Array,
 					value: []
 				},
-				TieneReddits:{
+				tieneReddits:{
 					type: Boolean,
 					computed: "noDatos(datos.length)"
 				},
 				reddit:{
 					type: Object,
 					value: {}	
+				},
+				tieneRedditsFilter:{
+					type: Boolean,
+					value: true
 				}
 			},
 			listeners:{
@@ -67,8 +71,6 @@
 				}
 			},
 			_elementTap: function(element) {
-				console.warn("Reddit clickeado:")
-				console.log(element.model.redditItem);
 				this.reddit = element.model.redditItem;
 				window.setTimeout(() => document.getElementById('top').scrollIntoView(), 100);
 			},
@@ -78,6 +80,7 @@
 				return response;
 			},
 			_fireHeader: function(event){
+				(event.detail.value == 0) ? this.tieneRedditsFilter = false : this.tieneRedditsFilter = true;
 				this.fire("number-reddits-printed", {
 					showedReddits: event.detail.value
 				})
