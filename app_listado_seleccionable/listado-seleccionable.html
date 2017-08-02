@@ -52,6 +52,9 @@
         </div>
         <hr>
       </template>
+      <template is="dom-if" if="[[!_hasItems(items)]]">
+        <h2>No hay items disponibles para mostrar.</h2>
+      </template>
       <button id="btn_listado" class="btn_fixed" disabled$="[[!_isItemSelected(selectedIndex)]]" on-tap="_clickBtn">[[buttonText]]</button>
     </div>
   </template>
@@ -85,8 +88,8 @@
         var array = [];
         for(let i = 1; i < 9; i++){
           var obj = {
-            title: "Titulo "+ i,
-            subtitle: "Sub-titulo "+ i,
+            title: "Titulo " + i,
+            subtitle: "Sub-titulo " + i,
             infotitle: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris...",
             infosubtitle: "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis...",
             open: false
@@ -99,10 +102,13 @@
         this.selectedIndex = (this.selectedIndex != data.model.index) ? data.model.index : -1;
       },
       _itemOpened: function(selectedIndex, index){
-        return (selectedIndex == index);
+        return selectedIndex == index;
       },
       _isItemSelected: function(selectedIndex){
-        return (selectedIndex != -1);
+        return selectedIndex != -1;
+      },
+      _hasItems: function(items){
+        return items.length > 0;
       },
       _clickBtn: function(){
         alert("Boton clickeado!");
