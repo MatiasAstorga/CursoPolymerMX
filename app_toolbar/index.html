@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<script type="text/javascript">
+		window.Polymer={
+			dom: "shadow",
+			useNativeCSSProperties: true
+		}
+	</script>
+
+	<title>Toolbar</title>
+	<meta charset="utf-8">
+	<link rel="import" href="./bower_components/polymer/polymer.html">
+	<link rel="import" href="./toolbar-component.html">
+	<style is="custom-style" include="slate-font-awesome">
+		
+	</style>
+</head>
+<body>
+	<h2>Toolbar selección única</h2>
+	<toolbar-component></toolbar-component>
+	<hr>
+	<h2>Toolbar selección múltiple</h2>
+	<toolbar-component allow-multiple-selection></toolbar-component>
+	<hr>
+</body>
+</html>
+
+
+

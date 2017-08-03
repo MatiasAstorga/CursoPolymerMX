@@ -1,0 +1,54 @@
+<link rel="import" href="./bower_components/slate-font-awesome/slate-font-awesome.html">
+<dom-module id="toolbar-item-component">
+  <template>
+    <style include="slate-font-awesome">
+      .container{
+        cursor: var(--cursor-container-toolbarItem-standard, pointer);
+        padding: var(--padding-toolbarItem-seleccionado-standard, 15px);
+        transition: var(--transition-toolbarItem-seleccionado-standard, all 0.3s ease);
+      }
+      .clickedItem{
+        background-color: var(--background-color-toolbarItem-seleccionado-standard, Tomato);
+      }
+      .imgPos{
+        width: auto;
+        height: 80px;
+        font-size: 14px;
+      }
+    </style>
+
+    <div class$="container [[clicked]]">
+      <i class$="[[icon]]"> [[text]]</i>
+      <p><img class="imgPos" alt="[[imageAlt]]" src="[[imageUrl]]"></p>
+    </div>
+    
+  </template>
+
+  <script>
+    Polymer({
+      is: "toolbar-item-component",
+      properties: {
+        text:{
+          type: String,
+          value: "default"
+        },
+        icon: {
+          type: String,
+          value: "default-icon"
+        },
+        imageUrl: {
+          type: String,
+          value: "default"
+        },
+        imageAlt: {
+          type: String,
+          value: "default"
+        },
+        clicked: {
+          type: String,
+          value: ""
+        }
+      },
+    });
+  </script>
+</dom-module>

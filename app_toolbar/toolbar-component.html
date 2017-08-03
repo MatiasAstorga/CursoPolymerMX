@@ -1,0 +1,111 @@
+<link rel="import" href="./toolbar-item-component.html">
+<dom-module id="toolbar-component">
+  <template>
+    <style>
+      .container{
+        max-width: var(--max-width-container-toolbar-standard, 700px);
+        margin: var(--margin-container-toolbar-standard, auto);
+        @apply(--class-container-toolbar-style);
+      }
+      .inLine{
+        width: 100%;
+        background-color: #555;
+        overflow: auto;
+        @apply(--class-inLine-toolbar-style);
+      }
+      .toolbarItems{
+        float: left;
+        width: 25%;
+        text-align: center;
+        transition: all 0.2s ease;
+        color: white;
+        font-size: 24px;
+        margin: auto;
+        @apply(--class-toolbarItems-toolbar-style);
+      }
+      .toolbarItems:hover{
+        background-color: DimGray;
+        @apply(--class-toolbarItems-hover-toolbar-style);
+      }
+    </style>
+    
+    <div class="container">
+      <div class="inLine">
+        <template id="listadoToolbarItems" is="dom-repeat" items="{{tools}}" as="tool">
+          <div class="toolbarItems" on-tap="_clickToolbarItem">
+            <toolbar-item-component text="[[tool.text]]" icon="[[tool.icon]]" image-url="[[tool.imageUrl]]" image-alt="[[tool.imageAlt]]" clicked="[[_itemClicked(tool.clickedClass)]]"></toolbar-item-component>
+            <!-- <toolbar-item-component text="[[tool.text]]" icon="[[tool.icon]]" image-url="[[tool.imageUrl]]" image-alt="[[tool.imageAlt]]" clicked="[[_itemClicked(selectedIndex, index, tool.clickedClass)]]"></toolbar-item-component> -->
+          </div>
+        </template>
+      </div>
+    </div>
+  </template>
+
+  <script>
+    Polymer({
+      is: "toolbar-component",
+      properties: {
+        allowMultipleSelection:{
+          type: Boolean,
+          value: false
+        },
+        tools:{
+          type: Array,
+          value: []
+        },
+        // selectedIndex:{
+        //   type: Number,
+        //   value: -1
+        // }
+      },
+      listeners: {
+        "toolbar-item-clicked" : "_fireClick",
+      },
+      attached: function(){
+        var array = [];
+        var icons = ["fa fa-home", "fa fa-graduation-cap", "fa fa-shopping-cart", "fa fa-street-view"];
+        var texts = ["Home", "Graduation", "Shopping", "Street View"];
+        var imgUrl = ["http://www.freeiconspng.com/uploads/no-image-icon-13.png", "http://www.freeiconspng.com/uploads/no-image-icon-18.png", "http://www.freeiconspng.com/uploads/no-image-icon-15.png", "http://www.freeiconspng.com/uploads/no-image-icon-33.png"]
+        for(let i = 0; i < 4; i++){
+          var obj = {
+            text: texts[i],
+            icon: icons[i],
+            imageUrl: imgUrl[i],
+            imageAlt: "image " + (i + 1),
+            clickedClass: ""
+          }
+          array.push(obj);
+        }
+        this.tools = array;
+      },
+      // _clickToolbarItem: function(data, index){
+      //   if(this.allowMultipleSelection){
+      //     data.model.tool.clickedClass = (data.model.tool.clickedClass == "") ? "clickedItem" : "";
+      //   }
+      //   this.selectedIndex = (this.selectedIndex != data.model.index) ? data.model.index : -1;
+      //   this.fire('toolbar-item-clicked', data.model.tool.text);
+      // },
+      // _itemClicked: function(selectedIndex, index, clickedClass){
+      //   return (this.allowMultipleSelection) ? (clickedClass == "clickedItem") ? "clickedItem" : "" : (selectedIndex == index) ? "clickedItem" : ""
+      // },
+      _clickToolbarItem: function(e){
+        var model = e.model;
+        var auxClickedClass = model.tool.clickedClass;
+        if(!this.allowMultipleSelection){
+          this.tools.forEach(function(tool, index){
+            tool.clickedClass = "";
+            this.notifyPath('tools.' + index + '.clickedClass', "");
+          }.bind(this));     
+        }
+        model.set("tool.clickedClass", (auxClickedClass == "") ? "clickedItem" : ""); 
+        this.fire('toolbar-item-clicked', model.tool.text);
+      },
+      _itemClicked: function(clickedClass){
+        return (clickedClass == "clickedItem") ? "clickedItem" : "";
+      },
+      _fireClick: function(data){
+        console.log("Item clickeado: " + data.detail)
+      }
+    });
+  </script>
+</dom-module>
