@@ -5,26 +5,42 @@
   <template>
     <style>
       .container{
-        max-width: var(--max-width-bbva-wear-app-container, 700px);
+        max-width: var(--max-width-bbva-wear-app-container, 750px);
         margin: var(--margin-bbva-wear-app-container, auto);
         @apply(--class-container-bbva-wear-app);
       }
-      .header{
-        background-color: var(--background-color-bbva-wear-app-container, gray);
-        width: var(--width-bbva-wear-app-container, 700px);
-        z-index: var(--z-index-bbva-wear-app-container, 2);
-        padding: var(--padding-bbva-wear-app-container, 10px);
-      }
       .body{
-        margin-top: 30px;
+        margin-top: 5px;
+      }
+      .in-line{
+        width: 100%;
+        background-color: #555;
+        overflow: auto;
+        @apply(--class-in-line-bbva-wear-app-style);
+      }
+      .header-items{
+        cursor: pointer;
+        float: left;
+        width: 30%;
+        padding: 12px;
+        text-align: center;
+        transition: all 0.2s ease;
+        color: white;
+        font-size: 16px;
+        margin: auto;
+        @apply(--class-header-items-bbva-wear-app-style);
+      }
+      .header-items:hover{
+        background-color: DimGray;
+        @apply(--class-header-items-hover-bbva-wear-app-style);
       }
     </style>
     
     <div class="container">
-      <header class="header">
-        <button class="" on-tap="_showProductForm">+ New product</button>
-        <button class="" on-tap="_showProductsList">View products list</button>
-        <button class="" on-tap="_showProductsWithoutStock">View products without stock</button>
+      <header class="in-line">
+        <i class="header-items" on-tap="_showProductForm">+ New product</i>
+        <i class="header-items" on-tap="_showProductsList">View products list</i>
+        <i class="header-items" on-tap="_showProductsWithoutStock">View products without stock</i>
       </header>
 
       <div class="body">
@@ -78,6 +94,7 @@
         "edit-product" : "_setProductSelected",
         "delete-product" : "_deleteProductSelected",
         "sell-product" : "_sellProductSelected",
+        "increase-stock-product" : "_increaseStockProductSelected",
         "product-without-stock" : "_setDataProductsWithoutStock",
         "product-with-stock" : "_removeDataFromProductsWithoutStock"
       },
@@ -128,6 +145,14 @@
           if(product.idProduct == data.detail.idProduct && product.stock > product.sales){
             product.sales = ++data.detail.sales;
             this.notifyPath('products.' + index + '.sales', product.sales);
+          }
+        }.bind(this));
+      },
+      _increaseStockProductSelected: function(data){
+        this.products.forEach(function(product, index){
+          if(product.idProduct == data.detail.idProduct){
+            product.stock += 10;
+            this.notifyPath('products.' + index + '.stock', product.stock);
           }
         }.bind(this));
       },
