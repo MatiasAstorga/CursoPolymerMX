@@ -14,13 +14,13 @@
     
     <div class="container">
       <header>
-        <h2>Products List</h2>
+        <h2>Products list {{_computeTitle(isNormalView)}}</h2>
       </header>
       
       <div>
         <template is="dom-repeat" items="{{products}}" as="product">
           <div>
-            <bbva-wear-item-detail normal-view id-product=[[product.idProduct]] name=[[product.name]] price=[[product.price]] size={{product.size}} stock=[[product.stock]] sales=[[product.sales]] image=[[product.image]]></bbva-wear-item-detail>
+            <bbva-wear-item-detail normal-view=[[isNormalView]] id-product=[[product.idProduct]] name=[[product.name]] price=[[product.price]] size={{product.size}} stock=[[product.stock]] sales=[[product.sales]] image=[[product.image]]></bbva-wear-item-detail>
             <hr>
           </div>
         </template>
@@ -40,7 +40,14 @@
         products: {
           type: Array,
           value: []
+        },
+        isNormalView: {
+          type: Boolean,
+          value: false
         }
+      },
+      _computeTitle: function(boolean){
+        return boolean ? "" : " without stock";
       }
     });
   </script>

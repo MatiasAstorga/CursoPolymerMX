@@ -31,11 +31,11 @@
         <bbva-wear-dm id="bbvaWearDM"></bbva-wear-dm>
         
         <template is="dom-if" if="[[viewProductsList]]">
-          <bbva-wear-products-list normal-view products=[[products]]></bbva-wear-products-list>
+          <bbva-wear-products-list is-normal-view=true products=[[products]]></bbva-wear-products-list>
         </template>
         
         <template is="dom-if" if="[[!viewProductsList]]">
-          <bbva-wear-products-list products=[[productsWithoutStock]]></bbva-wear-products-without-stock-list> 
+          <bbva-wear-products-list products=[[productsWithoutStock]]></bbva-wear-products-list> 
         </template>
 
         <template is="dom-if" if="[[selectedProduct]]">
