@@ -1,0 +1,20 @@
+{
+  "name": "examen_2_polymer",
+  "homepage": "https://github.com/MatiasAstorga/CursoPolymerMX",
+  "authors": [
+    "Matias Astorga <matias.astorga.donoso91@gmail.com>"
+  ],
+  "description": "",
+  "main": "",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "polymer": "1.9.3"
+  }
+}

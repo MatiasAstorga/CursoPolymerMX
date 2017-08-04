@@ -1,0 +1,43 @@
+<dom-module id="bbva-wear-dm">
+	<script>
+		Polymer({
+			is: 'bbva-wear-dm',
+			properties:{
+			  	data:{
+			  		type: Array,
+			  		value: []
+			  	}
+		  	},
+		  	_loadInitialProducts: function(){
+		  		for(let i = 0; i < 4; i++){
+		  			this.push("data", this._newProduct(i));
+		  		}
+		  		this.fire("initial-products", this.data);
+		  	},
+		  	_newProduct: function(index){
+		  		return product = {
+		  			idProduct: index,
+		  			name: this.generateAndDeleteRandomElement(names),
+		  			price: this.generateRandomNumber(1, 50),
+		  			size: this.generateRandomElement(sizes),
+		  			stock: this.generateRandomNumber(50, 100),
+		  			sales: this.generateRandomNumber(0, 49),
+		  			image: this.generateAndDeleteRandomElement(images)
+		  		};
+		  	},
+		  	generateRandomElement: function(element){
+		  		return element[Math.floor(Math.random() * element.length)];
+		  	},
+		  	generateAndDeleteRandomElement: function(element){
+		  		return element.splice(Math.floor(Math.random() * element.length), 1);
+		  	},
+		  	generateRandomNumber: function(min, max){
+		  		return Math.floor(Math.random() * (max - min + 1)) + min;
+		  	}
+		});
+
+		var names = ["T-shirt", "Pants", "Sueter", "Shoes"];
+		var sizes = ["XS", "S", "M", "L", "XL"];
+		var images = ["https://openclipart.org/image/2400px/svg_to_png/81865/monkey-face-cartoon.png", "https://openclipart.org/image/2400px/svg_to_png/3243/Sicabol-Funny-whale.png", "http://doggiedetail.com/wp-content/uploads/2011/04/Funny-Maddie.png", "https://vignette4.wikia.nocookie.net/lossimpson/images/f/fe/My_Funny_Family_2.png/revision/latest?cb=20101229071505&path-prefix=es"]
+	</script>
+</dom-module>

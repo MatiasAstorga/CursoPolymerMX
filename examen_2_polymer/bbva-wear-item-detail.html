@@ -1,0 +1,149 @@
+<dom-module id="bbva-wear-item-detail">
+  <template>
+    <style>
+      .container{
+        padding: var(--padding-bbva-wear-item-detail-container, 15px);
+        transition: var(--transition-bbva-wear-item-detail-container, all 0.3s ease);
+      }
+      .img-xs{
+        width: var(--cursor-lbbva-wear-item-detail-img-xs, auto);
+        max-width: var(--cursor-bbva-wear-item-detail-img-xs, 70px);
+        height: var(--height-bbva-wear-item-detail-img-xs, auto);
+        font-size: var(--font-size-bbva-wear-item-detail-img-xs, 14px);
+        margin-right: var(--margin-right-bbva-wear-item-detail-img-xs, 10px);
+      }
+      .first-td{
+        width: 20%;
+      }
+      .second-td{
+        width: 70%;
+      }
+      .third-td{
+        width: 10%;
+      }
+      label, button{
+        margin-right: 10px;
+        @apply(--class-button-bbva-wear-item-detail);
+      }
+      button{
+        cursor: pointer;
+        margin: 5px;
+        @apply(--class-button-bbva-wear-item-detail);
+      }
+    </style>
+
+    <div class="container">
+    <template is="dom-if" if="[[normalView]]">
+      <table>
+        <tr>
+          <td class="first-td">
+            <img class="img-xs" src="[[image]]">
+          </td>
+          <td class="second-td">
+            <label>Name: [[name]]</label>
+            <label>Price: [[_formatMoney(price)]]</label>
+            <label>Sizes: [[size]]</label>
+            <label>Sales: [[sales]]</label>
+            <label>Stock: [[stock]]</label>
+          </td>
+           <td class="third-td">
+            <button on-tap="_edit">Edit</button>
+            <button on-tap="_delete">Delete</button>
+            <button on-tap="_sell">Sell</button>
+          </td>
+        </tr>
+      </table>
+    </template>
+    
+    <template is="dom-if" if="[[!normalView]]">
+      <table>
+        <tr>
+          <td class="first-td">
+            <img class="img-xs" src="[[image]]">
+          </td>
+          <td class="second-td">
+            <label>Name: [[name]]</label>
+            <label>Sizes: [[size]]</label>
+            <label>Sales: [[sales]]</label>
+            <strong><label>Amount raised: [[_totalAmountRaised(sales)]]</label></strong>
+          </td>
+        </tr>
+      </table>
+    </template>  
+    </div>
+  </template>
+
+  <script>
+    Polymer({
+      is: "bbva-wear-item-detail",
+      properties: {
+        idProduct: {
+          type: Number,
+          value: 0
+        },
+        name: {
+          type: String,
+          value: "-"
+        },
+        price: {
+          type: Number,
+          value: 0
+        },
+        size: {
+          type: String,
+          value: ""
+        },
+        stock: {
+          type: Number,
+          observer: "_productChanges",
+          value: 0
+        },
+        sales: {
+          type: Number,
+          observer: "_productChanges",
+          value: 0
+        },
+        image: {
+          type: String,
+          value: ""
+        },
+        normalView: {
+          type: Boolean,
+          value: false
+        }
+      },
+      _formatMoney: function(value){
+        return new Intl.NumberFormat('es-US', {
+            style: 'currency',
+            currency: 'USD'
+        }).format(value);
+      },
+      _edit: function(){
+        this.fire("edit-product", this._returnProductProperties());
+      },
+      _delete: function(){
+        this.fire("delete-product", this._returnProductProperties());
+      },
+      _sell: function(){
+        this.fire("sell-product", this._returnProductProperties());
+      },
+      _productChanges: function(){
+        this.sales >= this.stock ? this.fire("product-without-stock", this._returnProductProperties()) : this.fire("product-with-stock", this._returnProductProperties());
+      },
+      _totalAmountRaised: function(sales){
+        return this._formatMoney(this.sales * this.price)
+      },
+      _returnProductProperties: function(){
+        return {
+          idProduct: this.idProduct,
+          name: this.name,
+          price: +this.price,
+          size: this.size,
+          stock: +this.stock,
+          sales: +this.sales,
+          image: this.image
+        }
+      }
+    });
+  </script>
+</dom-module>

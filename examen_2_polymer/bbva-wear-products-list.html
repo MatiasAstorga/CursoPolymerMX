@@ -1,0 +1,47 @@
+<link rel="import" href="./bbva-wear-item-detail.html">
+<dom-module id="bbva-wear-products-list">
+  <template>
+    <style>
+      .container{
+        max-width: var(--max-width-bbva-wear-products-list-container, 700px);
+        margin: var(--margin-bbva-wear-products-list-container, auto);
+        @apply(--class-container-bbva-wear-products-list);
+      }
+      h2{
+        display: inline-block;
+      }
+    </style>
+    
+    <div class="container">
+      <header>
+        <h2>Products List</h2>
+      </header>
+      
+      <div>
+        <template is="dom-repeat" items="{{products}}" as="product">
+          <div>
+            <bbva-wear-item-detail normal-view id-product=[[product.idProduct]] name=[[product.name]] price=[[product.price]] size=[[product.size]] stock=[[product.stock]] sales=[[product.sales]] image=[[product.image]]></bbva-wear-item-detail>
+            <hr>
+          </div>
+        </template>
+      </div>
+
+      <template is="dom-if" if="[[!products.length]]">
+        <h2>There's no products to show :( </h2>
+        <hr>
+      </template>
+    </div>
+  </template>
+
+  <script>
+    Polymer({
+      is: "bbva-wear-products-list",
+      properties: {
+        products: {
+          type: Array,
+          value: []
+        }
+      }
+    });
+  </script>
+</dom-module>

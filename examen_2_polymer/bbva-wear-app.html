@@ -1,0 +1,152 @@
+<link rel="import" href="./bbva-wear-products-list.html">
+<link rel="import" href="./bbva-wear-product-form.html">
+<link rel="import" href="./bbva-wear-products-without-stock-list.html">
+<link rel="import" href="./bbva-wear-dm.html">
+<dom-module id="bbva-wear-app">
+  <template>
+    <style>
+      .container{
+        max-width: var(--max-width-bbva-wear-app-container, 700px);
+        margin: var(--margin-bbva-wear-app-container, auto);
+        @apply(--class-container-bbva-wear-app);
+      }
+      .header{
+        background-color: var(--background-color-bbva-wear-app-container, gray);
+        width: var(--width-bbva-wear-app-container, 700px);
+        z-index: var(--z-index-bbva-wear-app-container, 2);
+        padding: var(--padding-bbva-wear-app-container, 10px);
+      }
+      .body{
+        margin-top: 30px;
+      }
+    </style>
+    
+    <div class="container">
+      <header class="header">
+        <button class="" on-tap="_showProductForm">+ New product</button>
+        <button class="" on-tap="_showProductsList">View products list</button>
+        <button class="" on-tap="_showProductsWithoutStock">View products without stock</button>
+      </header>
+
+      <div class="body">
+        <bbva-wear-dm id="bbvaWearDM"></bbva-wear-dm>
+        
+        <template is="dom-if" if="[[viewProductsList]]">
+          <bbva-wear-products-list products=[[products]]></bbva-wear-products-list>
+        </template>
+        
+        <template is="dom-if" if="[[!viewProductsList]]">
+          <bbva-wear-products-without-stock-list products=[[productsWithoutStock]]></bbva-wear-products-without-stock-list> 
+        </template>
+
+        <template is="dom-if" if="[[selectedProduct]]">
+          <bbva-wear-product-form id-product=[[selectedProduct.idProduct]] name=[[selectedProduct.name]] price=[[selectedProduct.price]] size=[[selectedProduct.size]] sales=[[selectedProduct.sales]] stock=[[selectedProduct.stock]] image=[[selectedProduct.image]]></bbva-wear-product-form>
+        </template>
+      </div>
+      
+    </div>
+  </template>
+
+  <script>
+    Polymer({
+      is: "bbva-wear-app",
+      properties: {
+        products: {
+          type: Array,
+          value: []
+        },
+        selectedProduct: {
+          type: Object,
+          value: null
+        },
+        productIDGenerator: {
+          type: Number,
+          value: 4
+        },
+        productsWithoutStock: {
+          type: Array,
+          value: []
+        },
+        viewProductsList: {
+          type: Boolean,
+          value: true
+        }
+      },
+      listeners:{
+        "bbvaWearDM.initial-products" : "_setDataInitialProducts",
+        "new-product" : "_showProductForm",
+        "process-product" : "_processProduct",
+        "edit-product" : "_setProductSelected",
+        "delete-product" : "_deleteProductSelected",
+        "sell-product" : "_sellProductSelected",
+        "product-without-stock" : "_setDataProductsWithoutStock",
+        "product-with-stock" : "_removeDataFromProductsWithoutStock"
+      },
+      attached: function(){
+        this.$.bbvaWearDM._loadInitialProducts();
+      },
+      _setDataInitialProducts: function(data){
+        this.push("products", ...data.detail);
+      },
+      _processProduct: function(data){
+        (data.detail.idProduct == undefined) ? this._addNewProduct(data) : this._editProductSelected(data);
+        this.selectedProduct = null;
+      },
+      _showProductForm: function(){
+        this.selectedProduct = {};
+      },
+      _addNewProduct: function(data){
+        data.detail.idProduct = ++this.productIDGenerator;
+        this.push("products", data.detail);
+      },
+      _setProductSelected: function(data){
+        this.selectedProduct = data.detail;
+      },
+      _editProductSelected: function(data){
+        this.products.forEach(function(product, index){
+          if(product.idProduct == data.detail.idProduct){
+            product.name = data.detail.name;
+            product.price = data.detail.price;
+            product.size = data.detail.size;
+            product.stock = data.detail.stock;
+            product.sales = data.detail.sales;
+            product.image = data.detail.image;
+            this.notifyPath('products.' + index + '.name', data.detail.name);
+            this.notifyPath('products.' + index + '.price', data.detail.price);
+            this.notifyPath('products.' + index + '.size', data.detail.size);
+            this.notifyPath('products.' + index + '.stock', data.detail.stock);
+            this.notifyPath('products.' + index + '.sales', data.detail.sales);
+            this.notifyPath('products.' + index + '.image', data.detail.image);
+          }
+        }.bind(this));
+      },
+      _deleteProductSelected: function(data){
+        this.splice('products', this.products.findIndex(elem => elem.idProduct == data.detail.idProduct), 1);
+        this._removeDataFromProductsWithoutStock(data);
+      },
+      _sellProductSelected: function(data){
+        this.products.forEach(function(product, index){
+          if(product.idProduct == data.detail.idProduct && product.stock > product.sales){
+            product.sales = ++data.detail.sales;
+            this.notifyPath('products.' + index + '.sales', product.sales);
+          }
+        }.bind(this));
+      },
+      _setDataProductsWithoutStock: function(data){
+        this.push("productsWithoutStock", data.detail);
+      },
+      _removeDataFromProductsWithoutStock: function(data){
+        var isProductInArray = this.productsWithoutStock.findIndex(elem => elem.idProduct == data.detail.idProduct)
+        if(isProductInArray != -1){
+          this.splice('productsWithoutStock', isProductInArray, 1);
+        }
+      },
+      _showProductsWithoutStock: function(){
+        this.viewProductsList = false;
+      },
+      _showProductsList: function(){
+        this.viewProductsList = true;
+      }
+    });
+  </script>
+</dom-module>

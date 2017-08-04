@@ -1,0 +1,121 @@
+<dom-module id="bbva-wear-product-form">
+  <template>
+    <style>
+      .container{
+        width: var(--width-bbva-wear-product-form-container, 45%);
+        margin-right: var(--margin-right-bbva-wear-product-form-container, auto);
+        margin-left: var(--margin-left-bbva-wear-product-form-container, auto);
+        margin-top: var(--margin-top-bbva-wear-product-form-container, 20px);
+        padding: var(--padding-bbva-wear-product-form-container, 15px);
+        transition: var(--transition-bbva-wear-product-form-container, all 0.3s ease);
+        border: var(--border-bbva-wear-product-form-container, 1px solid black);
+      }
+      .container:last-child input{
+        margin-right: 0px;
+      }
+      .save-product{
+        float: var(--float-bbva-wear-product-form-tag-button, right);
+        margin-top: var(--margin-top-bbva-wear-product-form-tag-button, -10px);
+      }
+      input, label{
+        margin: var(--margin-bbva-wear-product-form-input-label, 5px);
+      }
+      h2{
+        margin-top: 5px;
+      }
+    </style>
+
+    <div class="container">
+      <h2>Product</h2>
+      <table>
+        <tr>
+          <td>Name</td>
+          <td><input type="text" id="productName" value={{name::input}}></td>
+        </tr>
+        <tr>
+          <td>Price</td>
+          <td><input type="number" id="productPrice" value={{price::input}}></td>
+        </tr>
+        <tr>
+          <td>Size</td>
+          <td><input type="text" id="productSize" value={{size::input}}></td>
+        </tr>
+        <tr>
+          <td>Stock</td>
+          <td><input type="number" id="productStock" value={{stock::input}}></td>
+        </tr>
+        <tr>
+          <td>Sales</td>
+          <td><input type="number" id="productSales" value={{sales::input}}></td>
+        </tr>
+        <tr>
+          <td>Image</td>
+          <td><input type="text" id="productImage" value={{image::input}}></td>
+        </tr>
+      </table>
+
+      <div>
+        <button class="save-product" on-tap="_saveProduct">Save</button>
+      </div>   
+    </div> 
+  </template>
+
+  <script>
+    Polymer({
+      is: "bbva-wear-product-form",
+      properties: {
+        idProduct: {
+          type: Number,
+          value: -1
+        },
+        name: {
+          type: String,
+          value: "-"
+        },
+        price: {
+          type: Number,
+          value: 0
+        },
+        size: {
+          type: Array,
+          value: []
+        },
+        stock: {
+          type: Number,
+          value: 0
+        },
+        sales: {
+          type: Number,
+          value: 0
+        },
+        image: {
+          type: String,
+          value: ""
+        }
+      },
+      _saveProduct: function(){
+        this.fire("process-product", {
+          idProduct: this.idProduct,
+          name: this._validateName(this.name),
+          price: this._validatePrice(this.price),
+          size: this.size,
+          stock: this._validateStock(this.stock),
+          sales: this._validateSales(this.sales),
+          image: this.image
+        });
+      },
+      _validatePrice: function(price){
+        return (price != "" && price != 0 && price != undefined) ? price : 1;
+      },
+      _validateName: function(name){
+        return (name != "" && name != undefined) ? name : "no-name";
+      },
+      _validateStock: function(stock){
+        return (stock >= 0 && stock != undefined) ? stock : 0;
+      },
+      _validateSales: function(sales){
+        return (sales >= 0 && sales != undefined) ? sales : 0;
+      } 
+    });
+  </script>
+</dom-module>
