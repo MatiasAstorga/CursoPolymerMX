@@ -1,0 +1,93 @@
+<dom-module id="listado-alumnos-item">
+  <template>
+    <style>
+      .container{
+        cursor: var(--cursor-listado-alumnos-container, normal);
+        padding: var(--padding-listado-alumnos-container, 15px);
+        transition: var(--transition-listado-alumnos-container, all 0.3s ease);
+        display: inline-block;
+      }
+      .img-xs{
+        width: var(--cursor-listado-alumnos-img-xs, 80px);
+        height: var(--height-listado-alumnos-img-xs, auto);
+        font-size: var(--font-size-listado-alumnos-img-xs, 14px);
+        margin-right: var(--margin-right-listado-alumnos-img-xs, 10px);
+      }
+      .nota-roja{
+        color: var(--color-listado-alumnos-nota-roja, red);
+      }
+      .nota-verde{
+        color: var(--color-listado-alumnos-nota-verde, green);
+      }
+      label, button{
+        margin-right: 10px;
+      }
+      button{
+        cursor: pointer;
+      }
+    </style>
+
+    <div class="container">
+      <img class="img-xs" src="[[foto]]">
+      <label>[[nombre]]</label>
+      <label>[[apellidos]]</label>
+      <label class$="[[_colorPromedioNotas(promedioNotas)]]">([[promedioNotas]])</label>
+      <button on-tap="_editarAlumno">Editar</button>
+      <button on-tap="_borrarAlumno">Borrar</button>
+    </div>
+    
+  </template>
+
+  <script>
+    Polymer({
+      is: "listado-alumnos-item",
+      properties: {
+        idAlumno: {
+          type: Number,
+          value: 0
+        },
+        nombre:{
+          type: String,
+          value: "nombre"
+        },
+        apellidos: {
+          type: String,
+          value: "apellido1 apellido2"
+        },
+        foto: {
+          type: String,
+          value: "http://redyseguridad.fi-p.unam.mx/proyectos/admonredes/Imagenes/iconos/usuario.png"
+        },
+        notas: {
+          type: Array,
+          value: [3, 5, 7, 3]
+        },
+        promedioNotas: {
+          type: Number,
+          computed: "_computadaMediaDeNotas(notas)"
+        }
+      },
+      _computadaMediaDeNotas: function(notas){
+        return (notas.reduce((anterior, actual) => +anterior + +actual) / notas.length).toFixed(2);
+      },
+      _colorPromedioNotas: function(promedio){
+        return (promedio >= 5) ? "nota-verde" : "nota-roja";
+      },
+      _editarAlumno: function(){
+        this.fire("editar-alumno", this._returnAlumno());
+      },
+      _borrarAlumno: function(){
+        this.fire("borrar-alumno", this._returnAlumno());
+      },
+      _returnAlumno: function(){
+        return {
+          idAlumno: this.idAlumno,
+          nombre: this.nombre,
+          apellidos: this.apellidos,
+          foto: this.foto,
+          notas: this.notas
+        }
+      }
+    });
+  </script>
+</dom-module>

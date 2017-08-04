@@ -1,0 +1,111 @@
+<link rel="import" href="./listado-alumnos-item.html">
+<link rel="import" href="./alumno-form.html">
+<dom-module id="listado-alumnos">
+  <template>
+    <style>
+      .container{
+        max-width: var(--max-width-listado-alumnos-container, 500px);
+        margin: var(--margin-listado-alumnos-container, auto);
+        @apply(--class-container-listado-alumnos);
+      }
+      .hidden{
+        display: none;
+      }
+      h2{
+        display: inline-block;
+      }
+      button{
+        float: right;
+        position: relative;
+        top: 28px;
+        @apply(--class-button-listado-alumnos);
+      }
+    </style>
+    
+    <div class="container">
+      <header>
+        <h2>Listado de alumnos</h2>
+        <button on-tap="_formularioNuevoAlumno">Nuevo Alumno</button>
+      </header>
+      
+      <div>
+        <template is="dom-repeat" items="{{alumnos}}" as="alumno">
+          <div>
+            <listado-alumnos-item id-alumno=[[alumno.idAlumno]] nombre=[[alumno.nombre]] apellidos=[[alumno.apellidos]] foto=[[alumno.foto]] notas={{alumno.notas}}>    </listado-alumnos-item>
+            <hr>
+          </div>
+        </template>
+      </div>
+
+      <template is="dom-if" if="[[!_tieneAlumnos(alumnos.length)]]">
+        <h2>No hay alumnos para mostrar</h2>
+        <hr>
+      </template>
+      
+      <template is="dom-if" if="[[alumnoSeleccionado]]">
+        <alumno-form id-alumno=[[alumnoSeleccionado.idAlumno]] nombre=[[alumnoSeleccionado.nombre]] apellidos=[[alumnoSeleccionado.apellidos]] foto=[[alumnoSeleccionado.foto]] notas=[[alumnoSeleccionado.notas]]></alumno-form>
+      </template>
+      
+    </div>
+  </template>
+
+  <script>
+    Polymer({
+      is: "listado-alumnos",
+      properties: {
+        alumnos:{
+          type: Array,
+          value: []
+        },
+        generadorIdAlumnos:{
+          type: Number,
+          value: 0
+        },
+        esAlumnoFormVisible:{
+          type: Boolean,
+          value: false
+        },
+        alumnoSeleccionado:{
+          type: Object,
+          value: null
+        }
+      },
+      listeners: {
+        "editar-alumno" : "_editarAlumnoDelListado",
+        "borrar-alumno" : "_borrarAlumnoDelListado",
+        "process-alumno" : "_procesarAlumno"
+      },
+      _tieneAlumnos: function(alumnosLength){
+        return alumnosLength > 0;
+      },
+      _editarAlumnoDelListado: function(data){
+        this.alumnoSeleccionado = data.detail;
+      },
+      _borrarAlumnoDelListado: function(data){
+        this.splice('alumnos', this.alumnos.findIndex(elem => elem.idAlumno == data.detail.idAlumno), 1);
+      },
+      _procesarAlumno: function(data){
+        if(data.detail.idAlumno == undefined){
+          data.detail.idAlumno = this.generadorIdAlumnos++;
+          this.push("alumnos", data.detail);
+        }else {
+          this.alumnos.forEach(function(alumno, index){
+            if(alumno.idAlumno == data.detail.idAlumno){
+              alumno.nombre = data.detail.nombre;
+              alumno.apellidos = data.detail.apellidos;
+              alumno.foto = data.detail.foto;
+              this.notifyPath('alumnos.' + index + '.nombre', data.detail.nombre);
+              this.notifyPath('alumnos.' + index + '.apellidos', data.detail.apellidos);
+              this.notifyPath('alumnos.' + index + '.foto', data.detail.foto);
+              this.notifyPath('alumnos.' + index + '.notas', data.detail.notas);
+            }
+          }.bind(this));     
+        }
+        this.alumnoSeleccionado = null;
+      },
+      _formularioNuevoAlumno: function(){
+        this.alumnoSeleccionado = {notas: []};
+      }
+    });
+  </script>
+</dom-module>

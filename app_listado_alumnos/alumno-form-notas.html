@@ -1,0 +1,43 @@
+<dom-module id="alumno-form-notas">
+  <template>
+    <style>
+      .container{
+        padding: var(--padding-alumno-form-notas-container, 15px);
+        transition: var(--transition-alumno-form-notas-container, all 0.3s ease);
+        border: var(--border-alumno-form-notas-container, 1px solid gray);
+        margin-top: var(--margin-top-alumno-form-notas-container, 20px);
+      }
+      .container:last-child input{
+        margin-right: 0px;
+      }
+      input{
+        margin: 10px;
+        width: 90px;
+      }
+    </style>
+
+    <div class="container">
+      <button on-tap="_agregarNota"> + Agregar Nota</button>
+      <template is="dom-repeat" items="{{notas}}" as="nota">
+        <input type="number" min=1 max=10 id="notaAlumno" placeholder="Nota" value={{nota::input}}>   
+      </template> 
+    </div>
+
+    
+  </template>
+
+  <script>
+    Polymer({
+      is: "alumno-form-notas",
+      properties: {
+        notas:{
+          type: Array,
+          value: []
+        }
+      },
+      _agregarNota: function(){
+        this.push("notas", {});
+      }
+    });
+  </script>
+</dom-module>

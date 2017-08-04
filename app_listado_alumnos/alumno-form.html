@@ -1,0 +1,76 @@
+<link rel="import" href="./alumno-form-notas.html">
+<dom-module id="alumno-form">
+  <template>
+    <style>
+      .container{
+        padding: var(--padding-alumno-form-container, 15px);
+        transition: var(--transition-alumno-form-container, all 0.3s ease);
+        display: inline-block;
+        border: var(--border-alumno-form-container, 1px solid black);
+        margin-top: var(--margin-top-alumno-form-container, 20px);
+      }
+      .container:last-child input{
+        margin-right: 0px;
+      }
+      input{
+        margin: 10px;
+      }
+      button{
+        float: right;
+        margin-top: 20px;
+        @apply(--class-button-alumno-form);
+      }
+    </style>
+
+    <div class="container">
+      <input type="text" id="nombreAlumno" placeholder="Nombre" value={{nombre::input}}>
+      <input type="text" id="apellidoAlumno" placeholder="Apellidos" value={{apellidos::input}}>
+      <input type="text" id="fotoAlumno" placeholder="URL Imagen" value={{foto::input}}>
+
+      <alumno-form-notas notas=[[notas]]></alumno-form-notas>
+ 
+      <div>
+        <button on-tap="_guardarAlumno">Guardar</button>
+      </div>   
+    </div>
+
+    
+  </template>
+
+  <script>
+    Polymer({
+      is: "alumno-form",
+      properties: {
+        idAlumno:{
+          type: Number,
+          value: -1
+        },
+        nombre:{
+          type: String,
+          value: ""
+        },
+        apellidos:{
+          type: String,
+          value: ""
+        },
+        foto:{
+          type: String,
+          value: ""
+        },
+        notas:{
+          type: Array,
+          value: []
+        }
+      },
+      _guardarAlumno: function(){
+        this.fire("process-alumno", {
+          idAlumno: this.idAlumno,
+          nombre: this.nombre,
+          apellidos: this.apellidos,
+          foto: this.foto,
+          notas: Object.assign([], this.notas)
+        });
+      }  
+    });
+  </script>
+</dom-module>
