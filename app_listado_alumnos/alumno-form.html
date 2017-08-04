@@ -68,7 +68,7 @@
           nombre: this.nombre,
           apellidos: this.apellidos,
           foto: this.foto,
-          notas: Object.assign([], this.notas)
+          notas: Object.assign([], this.notas.filter(elem => !isNaN(elem) && elem > 0 && elem <= 10))
         });
       }  
     });

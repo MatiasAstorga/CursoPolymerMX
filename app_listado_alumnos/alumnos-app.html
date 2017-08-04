@@ -1,0 +1,75 @@
+<link rel="import" href="./listado-alumnos.html">
+<link rel="import" href="./alumno-form.html">
+<dom-module id="alumnos-app">
+  <template>
+    <style>
+      .container{
+        max-width: var(--max-width-listado-alumnos-container, 500px);
+        margin: var(--margin-listado-alumnos-container, auto);
+        @apply(--class-container-listado-alumnos);
+      }
+    </style>
+    
+    <div class="container">
+      <listado-alumnos alumnos=[[alumnos]]></listado-alumnos>
+      <template is="dom-if" if="[[alumnoSeleccionado]]">
+        <alumno-form id-alumno=[[alumnoSeleccionado.idAlumno]] nombre=[[alumnoSeleccionado.nombre]] apellidos=[[alumnoSeleccionado.apellidos]] foto=[[alumnoSeleccionado.foto]] notas=[[alumnoSeleccionado.notas]]></alumno-form>
+      </template>
+      
+    </div>
+  </template>
+
+  <script>
+    Polymer({
+      is: "alumnos-app",
+      properties: {
+        alumnos:{
+          type: Array,
+          value: []
+        },
+        generadorIdAlumnos:{
+          type: Number,
+          value: 0
+        },
+        alumnoSeleccionado:{
+          type: Object,
+          value: null
+        }
+      },
+      listeners: {
+        "editar-alumno" : "_editarAlumnoDelListado",
+        "borrar-alumno" : "_borrarAlumnoDelListado",
+        "procesar-alumno" : "_procesarAlumno",
+        "agregar-nuevo-alumno" : "_formularioNuevoAlumno"
+      },
+      _editarAlumnoDelListado: function(data){
+        this.alumnoSeleccionado = data.detail;
+      },
+      _borrarAlumnoDelListado: function(data){
+        this.splice('alumnos', this.alumnos.findIndex(elem => elem.idAlumno == data.detail.idAlumno), 1);
+      },
+      _procesarAlumno: function(data){
+        if(data.detail.idAlumno == undefined){
+          data.detail.idAlumno = this.generadorIdAlumnos++;
+          this.push("alumnos", data.detail);
+        }else {
+          this.alumnos.forEach(function(alumno, index){
+            if(alumno.idAlumno == data.detail.idAlumno){
+              alumno.nombre = data.detail.nombre;
+              alumno.apellidos = data.detail.apellidos;
+              alumno.foto = data.detail.foto;
+              this.notifyPath('alumnos.' + index + '.nombre', data.detail.nombre);
+              this.notifyPath('alumnos.' + index + '.apellidos', data.detail.apellidos);
+              this.notifyPath('alumnos.' + index + '.foto', data.detail.foto);
+              this.notifyPath('alumnos.' + index + '.notas', data.detail.notas);
+            }
+          }.bind(this));     
+        }
+        this.alumnoSeleccionado = null;
+      },
+      _formularioNuevoAlumno: function(){
+        this.alumnoSeleccionado = {notas: []};
+      }
+    });
+  </script>
+</dom-module>

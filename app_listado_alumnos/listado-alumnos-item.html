@@ -68,7 +68,7 @@
         }
       },
       _computadaMediaDeNotas: function(notas){
-        return (notas.reduce((anterior, actual) => +anterior + +actual) / notas.length).toFixed(2);
+        return (notas.length > 0) ? (notas.reduce((anterior, actual) => +anterior + +actual) / notas.length).toFixed(2) : "Sin notas";
       },
       _colorPromedioNotas: function(promedio){
         return (promedio >= 5) ? "nota-verde" : "nota-roja";
