@@ -74,12 +74,12 @@
         return (promedio >= 5) ? "nota-verde" : "nota-roja";
       },
       _editarAlumno: function(){
-        this.fire("editar-alumno", this._returnAlumno());
+        this.fire("editar-alumno", this._retornarObjetoAlumno());
       },
       _borrarAlumno: function(){
-        this.fire("borrar-alumno", this._returnAlumno());
+        this.fire("borrar-alumno", this._retornarObjetoAlumno());
       },
-      _returnAlumno: function(){
+      _retornarObjetoAlumno: function(){
         return {
           idAlumno: this.idAlumno,
           nombre: this.nombre,
