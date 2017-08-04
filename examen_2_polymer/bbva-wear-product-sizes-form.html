@@ -1,0 +1,41 @@
+<dom-module id="bbva-wear-product-sizes-form">
+  <template>
+    <style>
+      .container{
+        padding: var(--padding-bbva-wear-product-sizes-form-container, 15px);
+        transition: var(--transition-bbva-wear-product-sizes-form-container, all 0.3s ease);
+        border: var(--border-bbva-wear-product-sizes-form-container, 1px solid gray);
+        margin-top: var(--margin-top-bbva-wear-product-sizes-form-container, 20px);
+      }
+      .container:last-child input{
+        margin-right: 0px;
+      }
+      input{
+        margin: 10px;
+        width: 90px;
+      }
+    </style>
+
+    <div class="container">
+      <button on-tap="_addSize"> + Add size</button>
+      <template is="dom-repeat" items="{{sizes}}" as="size">
+        <input type="text" id="sizeProduct" placeholder="size" value={{size::input}}>   
+      </template> 
+    </div>
+  </template>
+
+  <script>
+    Polymer({
+      is: "bbva-wear-product-sizes-form",
+      properties: {
+        sizes:{
+          type: Array,
+          value: []
+        }
+      },
+      _addSize: function(){
+        this.push("sizes", []);
+      }
+    });
+  </script>
+</dom-module>

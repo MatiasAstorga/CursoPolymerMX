@@ -90,8 +90,8 @@
           value: 0
         },
         size: {
-          type: String,
-          value: ""
+          type: Array,
+          value: []
         },
         stock: {
           type: Number,
@@ -128,6 +128,7 @@
         this.fire("sell-product", this._returnProductProperties());
       },
       _productChanges: function(){
+        console.log(this.sales)
         this.sales >= this.stock ? this.fire("product-without-stock", this._returnProductProperties()) : this.fire("product-with-stock", this._returnProductProperties());
       },
       _totalAmountRaised: function(sales){

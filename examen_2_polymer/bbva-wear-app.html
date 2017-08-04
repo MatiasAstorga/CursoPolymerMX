@@ -1,6 +1,5 @@
 <link rel="import" href="./bbva-wear-products-list.html">
 <link rel="import" href="./bbva-wear-product-form.html">
-<link rel="import" href="./bbva-wear-products-without-stock-list.html">
 <link rel="import" href="./bbva-wear-dm.html">
 <dom-module id="bbva-wear-app">
   <template>
@@ -32,11 +31,11 @@
         <bbva-wear-dm id="bbvaWearDM"></bbva-wear-dm>
         
         <template is="dom-if" if="[[viewProductsList]]">
-          <bbva-wear-products-list products=[[products]]></bbva-wear-products-list>
+          <bbva-wear-products-list normal-view products=[[products]]></bbva-wear-products-list>
         </template>
         
         <template is="dom-if" if="[[!viewProductsList]]">
-          <bbva-wear-products-without-stock-list products=[[productsWithoutStock]]></bbva-wear-products-without-stock-list> 
+          <bbva-wear-products-list products=[[productsWithoutStock]]></bbva-wear-products-without-stock-list> 
         </template>
 
         <template is="dom-if" if="[[selectedProduct]]">
@@ -93,7 +92,7 @@
         this.selectedProduct = null;
       },
       _showProductForm: function(){
-        this.selectedProduct = {};
+        this.selectedProduct = {size: []};
       },
       _addNewProduct: function(data){
         data.detail.idProduct = ++this.productIDGenerator;
@@ -143,9 +142,11 @@
       },
       _showProductsWithoutStock: function(){
         this.viewProductsList = false;
+        this.selectedProduct = null;
       },
       _showProductsList: function(){
         this.viewProductsList = true;
+        this.selectedProduct = null;
       }
     });
   </script>

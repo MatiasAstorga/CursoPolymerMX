@@ -1,3 +1,4 @@
+<link rel="import" href="./bbva-wear-product-sizes-form.html">
 <dom-module id="bbva-wear-product-form">
   <template>
     <style>
@@ -17,11 +18,15 @@
         float: var(--float-bbva-wear-product-form-tag-button, right);
         margin-top: var(--margin-top-bbva-wear-product-form-tag-button, -10px);
       }
-      input, label{
+      input, label, select{
         margin: var(--margin-bbva-wear-product-form-input-label, 5px);
       }
       h2{
         margin-top: 5px;
+      }
+      .select{
+        height: 80px;
+        padding: 5px;
       }
     </style>
 
@@ -38,7 +43,7 @@
         </tr>
         <tr>
           <td>Size</td>
-          <td><input type="text" id="productSize" value={{size::input}}></td>
+          <td><bbva-wear-product-sizes-form sizes=[[size]]></bbva-wear-product-sizes-form></td>
         </tr>
         <tr>
           <td>Stock</td>
@@ -98,7 +103,7 @@
           idProduct: this.idProduct,
           name: this._validateName(this.name),
           price: this._validatePrice(this.price),
-          size: this.size,
+          size: Object.assign([], this._validateSizes(this.size)),
           stock: this._validateStock(this.stock),
           sales: this._validateSales(this.sales),
           image: this.image
@@ -107,11 +112,21 @@
       _validatePrice: function(price){
         return (price != "" && price != 0 && price != undefined) ? price : 1;
       },
+      _validateSizes: function(sizes){
+        if(sizes.length == 0){
+          return ["not defined"];
+        }else{
+          return sizes.filter(elem => {
+            elem = elem.toUpperCase();
+            return (elem == "XS" || elem == "S" || elem == "M" || elem == "L" || elem == "XL");
+          }).map(elem => elem.toUpperCase())
+        }  
+      },
       _validateName: function(name){
         return (name != "" && name != undefined) ? name : "no-name";
       },
       _validateStock: function(stock){
-        return (stock >= 0 && stock != undefined) ? stock : 0;
+        return (stock >= 0 && stock != undefined) ? stock : 1;
       },
       _validateSales: function(sales){
         return (sales >= 0 && sales != undefined) ? sales : 0;
