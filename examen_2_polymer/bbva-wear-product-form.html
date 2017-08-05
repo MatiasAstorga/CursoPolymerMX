@@ -3,30 +3,46 @@
   <template>
     <style>
       .container{
-        width: var(--width-bbva-wear-product-form-container, 45%);
+        max-width: var(--width-bbva-wear-product-form-container, 220px);
         margin-right: var(--margin-right-bbva-wear-product-form-container, auto);
         margin-left: var(--margin-left-bbva-wear-product-form-container, auto);
-        margin-top: var(--margin-top-bbva-wear-product-form-container, 20px);
-        padding: var(--padding-bbva-wear-product-form-container, 15px);
+        margin-top: var(--margin-top-bbva-wear-product-form-container, 10px);
+        margin-bottom: var(--margin-bottom-bbva-wear-product-form-container, 10px);
+        padding: var(--padding-bbva-wear-product-form-container, 5px);
         transition: var(--transition-bbva-wear-product-form-container, all 0.3s ease);
-        border: var(--border-bbva-wear-product-form-container, 1px solid black);
+        border: var(--border-bbva-wear-product-form-container, 1px solid lightgray);
+        text-align: var(--text-align-bbva-wear-product-form-container, center);
       }
+
       .container:last-child input{
         margin-right: 0px;
       }
+
       .save-product{
-        float: var(--float-bbva-wear-product-form-tag-button, right);
-        margin-top: var(--margin-top-bbva-wear-product-form-tag-button, -10px);
+        float: var(--float-bbva-wear-product-form-save-product, right);
+        margin-top: var(--margin-top-bbva-wear-product-form-save-product, 10px);
+        margin-right: var(--margin-right-bbva-wear-product-form-save-product, -6px);
+        font-size: var(--font-size-bbva-wear-product-form-save-product, 14px);
+        cursor: var(--cursor-bbva-wear-product-form-save-product, pointer);
+        padding: var(--padding-bbva-wear-product-form-save-product, 5px);
+        background-color: var(--background-color-bbva-wear-product-form-save-product, #b8dcb9);
+        border-radius: var(--border-radius-bbva-wear-product-form-save-product, 12px);
       }
+
+      .save-product:hover{
+        opacity: var(--opacity-bbva-wear-product-form-save-product-hover, 0.8);
+      }
+
+      .save-product:focus{
+        outline: var(--outline-bbva-wear-product-form-save-product-focus, none);
+      }
+
       input, label, select{
         margin: var(--margin-bbva-wear-product-form-input-label, 5px);
       }
+      
       h2{
         margin-top: 5px;
-      }
-      .select{
-        height: 80px;
-        padding: 5px;
       }
     </style>
 

@@ -5,22 +5,31 @@
         padding: var(--padding-bbva-wear-product-sizes-form-container, 15px);
         transition: var(--transition-bbva-wear-product-sizes-form-container, all 0.3s ease);
         border: var(--border-bbva-wear-product-sizes-form-container, 1px solid gray);
-        margin-top: var(--margin-top-bbva-wear-product-sizes-form-container, 20px);
+        width: var(--width-bbva-wear-product-sizes-form-container, 72%);
       }
+
       .container:last-child input{
         margin-right: 0px;
       }
+
       input{
-        margin: 10px;
-        width: 90px;
+        margin: var(--margin-bbva-wear-product-sizes-form-tag-input, 10px);
+        width: var(--width-bbva-wear-product-sizes-form-tag-input, 90px);
       }
+
+      label{
+        float: var(--float-bbva-wear-product-sizes-form-tag-label, left);
+        font-size: var(--font-size-bbva-wear-product-sizes-form-tag-label, 10px);
+      }
+      
     </style>
 
     <div class="container">
       <button on-tap="_addSize"> + Add size</button>
       <template is="dom-repeat" items="{{sizes}}" as="size">
         <input type="text" id="sizeProduct" placeholder="size" value={{size::input}}>   
-      </template> 
+      </template>
+       <label>* Allowed sizes: xs, s, m, l, xl</label> 
     </div>
   </template>
 

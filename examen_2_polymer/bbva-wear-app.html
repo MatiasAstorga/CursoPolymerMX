@@ -1,6 +1,8 @@
 <link rel="import" href="./bbva-wear-products-list.html">
 <link rel="import" href="./bbva-wear-product-form.html">
 <link rel="import" href="./bbva-wear-dm.html">
+<link rel="import" href="./snackbar-component.html">
+<link rel="import" href="./modal-component.html">
 <dom-module id="bbva-wear-app">
   <template>
     <style>
@@ -9,35 +11,48 @@
         margin: var(--margin-bbva-wear-app-container, auto);
         @apply(--class-container-bbva-wear-app);
       }
+
       .body{
-        margin-top: 5px;
+        margin-top: var(--margin-top-bbva-wear-app-body, 5px);
+        margin-bottom: var(--margin-bottom-bbva-wear-app-body, 20px);
       }
-      .in-line{
-        width: 100%;
-        background-color: #555;
-        overflow: auto;
-        @apply(--class-in-line-bbva-wear-app-style);
+
+      .header-in-line{
+        width: var(--width-bbva-wear-app-header-in-line, 100%);
+        background-color: var(--background-color-bbva-wear-app-header-in-line, #555);
+        overflow: var(--overflow-bbva-wear-app-header-in-line, auto);
+        @apply(--class-header-in-line-bbva-wear-app-style);
       }
+
       .header-items{
-        cursor: pointer;
-        float: left;
-        width: 30%;
-        padding: 12px;
-        text-align: center;
-        transition: all 0.2s ease;
-        color: white;
-        font-size: 16px;
-        margin: auto;
+        cursor: var(--cursor-bbva-wear-app-header-items, pointer);
+        float: var(--float-bbva-wear-app-header-items, left);
+        width: var(--width-bbva-wear-app-header-items, 30%);
+        padding: var(--padding-bbva-wear-app-header-items, 12px);
+        text-align: var(--text-align-bbva-wear-app-header-items, center);
+        transition: var(--transition-bbva-wear-app-header-items, all 0.2s ease);
+        color: var(--color-bbva-wear-app-header-items, white);
+        font-size: var(--font-size-bbva-wear-app-header-items, 16px);
+        margin: var(--margin-bbva-wear-app-header-items, auto);
         @apply(--class-header-items-bbva-wear-app-style);
       }
+
       .header-items:hover{
-        background-color: DimGray;
-        @apply(--class-header-items-hover-bbva-wear-app-style);
+        background-color: var(--background-color-bbva-wear-app-header-items-hover, dimgray);
+      }
+
+      .body-modal{
+        margin: var(--margin-bbva-wear-app-body-modal, 20px 0px 20px 0px);
+      }
+
+      .footer{
+        text-align: var(--text-align-bbva-wear-app-footer, center);
+        @apply(--class-footer-bbva-wear-app-style);
       }
     </style>
     
     <div class="container">
-      <header class="in-line">
+      <header class="header-in-line">
         <i class="header-items" on-tap="_showProductForm">+ New product</i>
         <i class="header-items" on-tap="_showProductsList">View products list</i>
         <i class="header-items" on-tap="_showProductsWithoutStock">View products without stock</i>
@@ -54,11 +69,20 @@
           <bbva-wear-products-list products=[[productsWithoutStock]]></bbva-wear-products-list> 
         </template>
 
-        <template is="dom-if" if="[[selectedProduct]]">
-          <bbva-wear-product-form id-product=[[selectedProduct.idProduct]] name=[[selectedProduct.name]] price=[[selectedProduct.price]] size=[[selectedProduct.size]] sales=[[selectedProduct.sales]] stock=[[selectedProduct.stock]] image=[[selectedProduct.image]]></bbva-wear-product-form>
-        </template>
+        <snackbar-component id="snackbarItem" text=[[messageText]]></snackbar-component>
+
+        <modal-component id="modalComponent">
+          <div id="body" slot="body" class="body-modal">
+            <template is="dom-if" if="[[selectedProduct]]">
+              <bbva-wear-product-form id-product=[[selectedProduct.idProduct]] name=[[selectedProduct.name]] price=[[selectedProduct.price]] size=[[selectedProduct.size]] sales=[[selectedProduct.sales]] stock=[[selectedProduct.stock]] image=[[selectedProduct.image]]></bbva-wear-product-form>
+            </template>
+          </div>
+        </modal-component>
       </div>
-      
+
+      <footer class="footer">
+        <label>Curso Polymer 2017 - BBVA Wear</label>
+      </footer>
     </div>
   </template>
 
@@ -76,7 +100,7 @@
         },
         productIDGenerator: {
           type: Number,
-          value: 4
+          value: 3
         },
         productsWithoutStock: {
           type: Array,
@@ -85,6 +109,10 @@
         viewProductsList: {
           type: Boolean,
           value: true
+        },
+        messageText: {
+          type: String,
+          value: "Welcome to the store"
         }
       },
       listeners:{
@@ -110,35 +138,33 @@
       },
       _showProductForm: function(){
         this.selectedProduct = {size: []};
+        this.$.modalComponent._open();
       },
       _addNewProduct: function(data){
         data.detail.idProduct = ++this.productIDGenerator;
         this.push("products", data.detail);
+        this.$.modalComponent._close();
+        this.messageText = data.detail.name + " (id: " + data.detail.idProduct + ") has been added";
       },
       _setProductSelected: function(data){
         this.selectedProduct = data.detail;
+        this.$.modalComponent._open();
       },
       _editProductSelected: function(data){
-        this.products.forEach(function(product, index){
-          if(product.idProduct == data.detail.idProduct){
-            product.name = data.detail.name;
-            product.price = data.detail.price;
-            product.size = data.detail.size;
-            product.stock = data.detail.stock;
-            product.sales = data.detail.sales;
-            product.image = data.detail.image;
-            this.notifyPath('products.' + index + '.name', data.detail.name);
-            this.notifyPath('products.' + index + '.price', data.detail.price);
-            this.notifyPath('products.' + index + '.size', data.detail.size);
-            this.notifyPath('products.' + index + '.stock', data.detail.stock);
-            this.notifyPath('products.' + index + '.sales', data.detail.sales);
-            this.notifyPath('products.' + index + '.image', data.detail.image);
-          }
-        }.bind(this));
+        var index = this.products.findIndex(element => element.idProduct == data.detail.idProduct);
+        this.set('products.' + index + '.name', data.detail.name);
+        this.set('products.' + index + '.price', data.detail.price);
+        this.set('products.' + index + '.size', data.detail.size);
+        this.set('products.' + index + '.stock', data.detail.stock);
+        this.set('products.' + index + '.sales', data.detail.sales);
+        this.set('products.' + index + '.image', data.detail.image);
+        this.$.modalComponent._close();
+        this.messageText = data.detail.name + " has been edited";
       },
       _deleteProductSelected: function(data){
         this.splice('products', this.products.findIndex(elem => elem.idProduct == data.detail.idProduct), 1);
         this._removeDataFromProductsWithoutStock(data);
+        this.messageText = data.detail.name + " has been deleted";
       },
       _sellProductSelected: function(data){
         this.products.forEach(function(product, index){
@@ -158,11 +184,13 @@
       },
       _setDataProductsWithoutStock: function(data){
         this.push("productsWithoutStock", data.detail);
+        this.messageText = data.detail.name + " is out of stock";
       },
       _removeDataFromProductsWithoutStock: function(data){
         var isProductInArray = this.productsWithoutStock.findIndex(elem => elem.idProduct == data.detail.idProduct)
         if(isProductInArray != -1){
           this.splice('productsWithoutStock', isProductInArray, 1);
+          this.messageText = data.detail.name + " is back in stock";
         }
       },
       _showProductsWithoutStock: function(){

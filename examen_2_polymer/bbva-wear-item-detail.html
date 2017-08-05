@@ -6,6 +6,7 @@
         transition: var(--transition-bbva-wear-item-detail-container, all 0.3s ease);
         background-color: var(--background-color-bbva-wear-item-detail-container, lightgrey);
       }
+
       .img-xs{
         width: var(--cursor-lbbva-wear-item-detail-img-xs, auto);
         max-width: var(--cursor-bbva-wear-item-detail-img-xs, 70px);
@@ -13,34 +14,38 @@
         font-size: var(--font-size-bbva-wear-item-detail-img-xs, 14px);
         margin-right: var(--margin-right-bbva-wear-item-detail-img-xs, 10px);
       }
+
       .first-td{
         width: 13%;
       }
+
       .second-td{
         width: 63%;
       }
+
       .third-td{
         width: 21%;
       }
-      label{
-        margin-right: 10px;
-        @apply(--class-button-bbva-wear-item-detail);
-      }
+
       .btn-actions{
-        cursor: pointer;
-        padding: 5px;
-        margin: 5px;
-        background: LightBlue;
-        border-radius: 12px;
+        cursor: var(--cursor-bbva-wear-item-detail-btn-actions, pointer);
+        padding: var(--padding-bbva-wear-item-detail-btn-actions, 5px);
+        margin: var(--margin-bbva-wear-item-detail-btn-actions, 5px);
+        background-color: var(--background-color-bbva-wear-item-detail-btn-actions, lightblue);
+        border-radius: var(--border-radius-bbva-wear-item-detail-btn-actions, 12px);
         @apply(--btn-actions-bbva-wear-item-detail-style);
       }
+
       .btn-actions:hover{
-        opacity: 0.8;
-        @apply(--btn-actions-hover-bbva-wear-item-detail-style);
+        opacity: var(--opacity-bbva-wear-item-detail-btn-actions-hover, 0.8);
       }
+
       .btn-actions:focus{
-        outline: none;
-        @apply(--btn-actions-focus-bbva-wear-item-detail-style);
+        outline: var(--outline-bbva-wear-item-detail-btn-actions-focus, none);
+      }
+
+      label{
+        margin-right: var(--margin-right-bbva-wear-item-detail-tag-label, 10px);
       }
     </style>
 
@@ -54,7 +59,7 @@
           <td class="second-td">
             <label>Name: [[name]]</label>
             <label>Price: [[_formatMoney(price)]]</label>
-            <label>Sizes: [[size]]</label>
+            <label>Sizes: [[_formatSizes(size)]]</label>
             <label>Sales: [[sales]]</label>
             <label>Stock: [[stock]]</label>
           </td>
@@ -76,7 +81,7 @@
           </td>
           <td class="second-td">
             <label>Name: [[name]]</label>
-            <label>Sizes: [[size]]</label>
+            <label>Sizes: [[_formatSizes(size)]]</label>
             <label>Sales: [[sales]]</label>
             <strong><label>Amount raised: [[_totalAmountRaised(sales)]]</label></strong>
           </td>
@@ -130,6 +135,9 @@
             style: 'currency',
             currency: 'USD'
         }).format(value);
+      },
+      _formatSizes: function(sizes){
+        return sizes.toString().replace(/\W+/g, " - ");
       },
       _edit: function(){
         this.fire("edit-product", this._returnProductProperties());

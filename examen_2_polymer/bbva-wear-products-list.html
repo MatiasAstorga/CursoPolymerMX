@@ -7,6 +7,7 @@
         margin: var(--margin-bbva-wear-products-list-container, auto);
         @apply(--class-container-bbva-wear-products-list);
       }
+
       h2{
         display: inline-block;
       }
@@ -46,8 +47,8 @@
           value: false
         }
       },
-      _computeTitle: function(boolean){
-        return boolean ? "" : " without stock";
+      _computeTitle: function(isNormalView){
+        return isNormalView ? "" : " without stock";
       }
     });
   </script>
